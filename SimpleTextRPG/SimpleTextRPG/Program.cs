@@ -11,7 +11,9 @@ namespace SimpleTextRPG
             Player gracz = new Player();
             gracz.gainExp(105);
             Console.WriteLine(gracz.exp);
-            mapa.checkMap();
+            gracz.drawGui(mapa);
+
+
         }
     }
 }
