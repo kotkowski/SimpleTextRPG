@@ -25,18 +25,22 @@ namespace SimpleTextRPG
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
-                        int tmp = rand.Next(2);
+                        int tmp = rand.Next(3);
                         char type = '*';
                         string name = "Invalid Location";
                         string prefix;
                         string mid;
                         string suffix;
+                        string descprefix;
+                        string descmid;
+                        string descsuffix;
+                        string desc = "Invalid Description";
                         if (i == 4 && y == 4)
                         {
                             type = 'V';
                             tmp = rand.Next(7);
                             prefix = ((City)tmp).ToString();
-
+                            desc = CityDescription[tmp];
                             name = prefix;
                         }
                         else
@@ -45,27 +49,34 @@ namespace SimpleTextRPG
                             {
                                 case 0:
                                     type = 'F';
-                                    tmp = rand.Next(7);
+                                    tmp = rand.Next(8);
                                     prefix = ((ForestPrefix)tmp).ToString();
-                                    tmp = rand.Next(7);
+                                    descprefix = ForestDescriptionPrefix[tmp];
+                                    tmp = rand.Next(8);
                                     mid = ((ForestMid)tmp).ToString();
+                                    descmid = ForestDescriptionMid[tmp];
                                     tmp = rand.Next(7);
                                     suffix = ((ForestSuffix)tmp).ToString();
-
+                                    descsuffix = ForestDescriptionSuffix[tmp];
+                                    
                                     name = prefix + " " +  mid + " " + suffix;
+                                    desc = descprefix + descsuffix + descmid;
 
                                     break;
                                 case 1:
                                     type = 'C';
                                     tmp = rand.Next(7);
                                     prefix = ((CavePrefix)tmp).ToString();
+                                    descprefix = CaveDescriptionPrefix[tmp];
                                     tmp = rand.Next(7);
                                     mid = ((CaveMid)tmp).ToString();
+                                    descmid = CaveDescriptionMid[tmp];
                                     tmp = rand.Next(7);
                                     suffix = ((CaveSuffix)tmp).ToString();
+                                    descsuffix = CaveDescriptionSuffix[tmp];
 
                                     name = prefix + " " + mid + " " + suffix;
-
+                                    desc = descprefix + descsuffix + descmid;
 
                                     break;
                               
@@ -73,13 +84,16 @@ namespace SimpleTextRPG
                                     type = 'M';
                                     tmp = rand.Next(3);
                                     prefix = ((MountainPrefix)tmp).ToString();
+                                    descprefix = MountainDescriptionPrefix[tmp];
                                     tmp = rand.Next(4);
                                     mid = ((MountainSuffix)tmp).ToString();
+                                    descmid = MountainDescriptionMid[tmp];
+                                    desc = descprefix + descmid;
                                     name = prefix + " " + mid;
                                     break;
                             }
                         }
-                        string desc = "Test";
+                        
                         map[i, y] = new Location(name, desc, type);
                     }
                 }
@@ -111,6 +125,10 @@ namespace SimpleTextRPG
             Blessed,
             Haunted
         }
+        List<string> ForestDescriptionPrefix = new List<string>(8)
+        {
+            "Very Dark ", "Pretty Young ", "Pretty Old ", "Pretty Bright ", "Smelling Funny ", "Filled With Evil Presence ", "Filled With Holy Presence ", "Filled With Unknown Presence "
+        };
         enum ForestMid
         {
             Pine,
@@ -122,6 +140,10 @@ namespace SimpleTextRPG
             Owl,
             Birch
         }
+        List<string> ForestDescriptionMid = new List<string>(8)
+        {
+            "Growing Pine Wood ", "Growing Oak Wood ", "Growing Spruce Wood ", "Growing Mahogany Wood ", "Growing All Types of Trees ", "Growing Leafy Trees ", "Filled With Owls ", "Growing Birch Wood "
+        };
         enum ForestSuffix
         {
             Forest,
@@ -132,6 +154,10 @@ namespace SimpleTextRPG
             Copse,
             Grove
         }
+        List<string> ForestDescriptionSuffix = new List<string>(7)
+        {
+            "Forest ", "Large Forest ", "Abandoned Lumeryard ", "Lush Tropical Forest ", "Dense Forest ", "Manmade Forest ", "Never Touched By Man Forest"
+        };
         enum City
         {
             Crowcow,
@@ -142,6 +168,13 @@ namespace SimpleTextRPG
             Stayaway,
             Limanowa
         }
+        List<string> CityDescription = new List<string>(7)
+        {
+            "Big City Cilled With Crowman. It is said that it was once Capital of Winged Cavalry Country.", "Defiled With War, Once Technology Based Metropoly, Now Fantasylike Medieval Village.",
+            "Magicbased Birdman Village. Basically A Giant Tree In The Middle Of Nowhere With 2 Kilometers Diameter Nest On The Top.", "Ye Olde Ye Village Ye Founded By Ye Olde Ye Mayore",
+            "Peacefulvillage was once founded by a very Peaceful Tribe. Now, Preparing For War With The Unknown.", "Borders Of This City Are Surrounded By Stay Away Signs. Very Hospitable People Live There.",
+            "Smells Like Rasberries"
+        };
         enum CavePrefix
         {
             Dark,
@@ -152,6 +185,10 @@ namespace SimpleTextRPG
             Secret,
             Trecherous
         }
+        List<string> CaveDescriptionPrefix = new List<string>(7)
+        {
+            "Prety Dark ", "Abandoned By Man ", "Filled With Traps ", "Covered With Sticky Goo ", "Filled With Water ", "Hidden Among The Woods ", "Filled With Unknown "
+        };
 
         enum CaveMid
         {
@@ -163,17 +200,25 @@ namespace SimpleTextRPG
             Salt,
             ProjectManager
         }
+        List<string> CaveDescriptionMid = new List<string>(7)
+        {
+            "Habitated By Wolfs", "Cursed With Undead Creatures", "Filled With Gold Ore", "Filled With Gooey Monsters", "Controlled By Bandits", "Filled With White Crystals", "Habitated By Project Manager"
+        };
 
         enum CaveSuffix
         {
             Den,
-            Next,
+            Nest,
             Hideout,
             Basement,
             Mine,
             Catacombs,
             Dungeon
         }
+        List<string> CaveDescriptionSuffix = new List<string>(7)
+        {
+            "Den ", "Nest ", "Hideout ", "Underground Basement ", "Mine ", "Catacombs ", "Dungeon "
+        };
 
         enum MountainPrefix
         {
@@ -181,6 +226,11 @@ namespace SimpleTextRPG
             Mt,
             Peak,
         }
+
+        List<string> MountainDescriptionPrefix = new List<string>(3)
+        {
+            "The High Mountain ", "The Short Mountain ", "The Peak " 
+        };
         enum MountainSuffix
         {
             Celeste,
@@ -188,6 +238,11 @@ namespace SimpleTextRPG
             Doom,
             Sniezka
         }
+
+        List<string> MountainDescriptionMid = new List<string>(4)
+        {
+            "Of Unfulfilled Dream", "That Everyone Knows", "OF DOOM", "Covered In Snow"
+        };
 
         public void checkMap()
         {
@@ -203,34 +258,23 @@ namespace SimpleTextRPG
                     
                     Console.ForegroundColor = ConsoleColor.White;
 
-                    if( y == 0)
-                    {
-                        Console.Write("    W");
+                    
 
-                    }
-                    if (y == 1)
-                    {
-                        Console.Write("   ASD");
+                }
+                if (i == 0)
+                {
+                    Console.Write("    W");
 
-                    }
+                }
+                if (i == 1)
+                {
+                    Console.Write("   ASD");
 
                 }
                 Console.WriteLine();
             }
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("==============================");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("You're currently at ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(map[Player.x, Player.y].name);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("It's " + map[Player.x,Player.y].desc + " place"); ;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("==============================");
-            Console.ForegroundColor = ConsoleColor.White;
+            
         }
 
         

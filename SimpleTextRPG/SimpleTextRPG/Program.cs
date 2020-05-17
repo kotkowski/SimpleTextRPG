@@ -8,12 +8,23 @@ namespace SimpleTextRPG
         {
             Map mapa = new Map(10);
             Console.WriteLine(mapa.Randomize(10));
-            Player gracz = new Player();
-            gracz.gainExp(105);
-            Console.WriteLine(gracz.exp);
-            gracz.drawGui(mapa);
+            Player.gainExp(105);
+            Console.WriteLine(Player.exp);
+            GameModel.drawGui(mapa);
 
 
         }
     }
 }
+
+
+/*
+ Plans to do next:
+- Fixing some bugs
+- Implementing Items
+- Implementing Shops
+- Implementing "Check Stats"
+- Implementing Inns
+- Implementing Story
+- Implementing Fight
+ */
