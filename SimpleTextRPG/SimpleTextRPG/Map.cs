@@ -6,8 +6,10 @@ namespace SimpleTextRPG
 {
     public class Map
     {
-        public int mapsize;
+        public static int mapsize;
         public static Location[,] map;
+        public static int GemX =0;
+        public static int GemY = 0;
         Random rand = new Random();
         public Map(int size = 10)
         {
@@ -20,12 +22,11 @@ namespace SimpleTextRPG
             try
             {
                 map = new Location[mapsize, mapsize];
-
                 for (int i = 0; i < mapsize; i++)
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
-                        int tmp = rand.Next(3);
+                        int tmp = rand.Next(100);
                         char type = '*';
                         string name = "Invalid Location";
                         string prefix;
@@ -45,42 +46,44 @@ namespace SimpleTextRPG
                         }
                         else
                         {
-                            switch (tmp)
+                            if (tmp < 60)
                             {
-                                case 0:
-                                    type = 'F';
-                                    tmp = rand.Next(8);
-                                    prefix = ((ForestPrefix)tmp).ToString();
-                                    descprefix = ForestDescriptionPrefix[tmp];
-                                    tmp = rand.Next(8);
-                                    mid = ((ForestMid)tmp).ToString();
-                                    descmid = ForestDescriptionMid[tmp];
-                                    tmp = rand.Next(7);
-                                    suffix = ((ForestSuffix)tmp).ToString();
-                                    descsuffix = ForestDescriptionSuffix[tmp];
-                                    
-                                    name = prefix + " " +  mid + " " + suffix;
-                                    desc = descprefix + descsuffix + descmid;
+                                type = 'F';
+                                tmp = rand.Next(8);
+                                prefix = ((ForestPrefix)tmp).ToString();
+                                descprefix = ForestDescriptionPrefix[tmp];
+                                tmp = rand.Next(8);
+                                mid = ((ForestMid)tmp).ToString();
+                                descmid = ForestDescriptionMid[tmp];
+                                tmp = rand.Next(7);
+                                suffix = ((ForestSuffix)tmp).ToString();
+                                descsuffix = ForestDescriptionSuffix[tmp];
 
-                                    break;
-                                case 1:
-                                    type = 'C';
-                                    tmp = rand.Next(7);
-                                    prefix = ((CavePrefix)tmp).ToString();
-                                    descprefix = CaveDescriptionPrefix[tmp];
-                                    tmp = rand.Next(7);
-                                    mid = ((CaveMid)tmp).ToString();
-                                    descmid = CaveDescriptionMid[tmp];
-                                    tmp = rand.Next(7);
-                                    suffix = ((CaveSuffix)tmp).ToString();
-                                    descsuffix = CaveDescriptionSuffix[tmp];
+                                name = prefix + " " + mid + " " + suffix;
+                                desc = descprefix + descsuffix + descmid;
 
-                                    name = prefix + " " + mid + " " + suffix;
-                                    desc = descprefix + descsuffix + descmid;
+                            }
+                            else
+                                if (tmp >= 60 && tmp < 90)
+                            {
+                                type = 'C';
+                                tmp = rand.Next(7);
+                                prefix = ((CavePrefix)tmp).ToString();
+                                descprefix = CaveDescriptionPrefix[tmp];
+                                tmp = rand.Next(7);
+                                mid = ((CaveMid)tmp).ToString();
+                                descmid = CaveDescriptionMid[tmp];
+                                tmp = rand.Next(7);
+                                suffix = ((CaveSuffix)tmp).ToString();
+                                descsuffix = CaveDescriptionSuffix[tmp];
 
-                                    break;
-                              
-                                case 2:
+                                name = prefix + " " + mid + " " + suffix;
+                                desc = descprefix + descsuffix + descmid;
+
+                            }
+                            else
+                                if (tmp >= 90)
+                            { 
                                     type = 'M';
                                     tmp = rand.Next(3);
                                     prefix = ((MountainPrefix)tmp).ToString();
@@ -90,13 +93,21 @@ namespace SimpleTextRPG
                                     descmid = MountainDescriptionMid[tmp];
                                     desc = descprefix + descmid;
                                     name = prefix + " " + mid;
-                                    break;
+                                 
                             }
                         }
                         
                         map[i, y] = new Location(name, desc, type);
                     }
                 }
+                do
+                {
+                    GemX = rand.Next(mapsize);
+                    GemY = rand.Next(mapsize);
+                }
+                while (map[GemX, GemY].symbol == 'V');
+
+                    
             }
             catch(Exception)
             {
@@ -250,10 +261,15 @@ namespace SimpleTextRPG
             {
                 for (int y = 0; y < mapsize; y++)
                 {
+                    if(i == Map.GemX && y == Map.GemY && Player.GolemAlive==true)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    }
                     if(i == Player.x && y == Player.y )
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
+                    
                     Console.Write(map[i, y].symbol);
                     
                     Console.ForegroundColor = ConsoleColor.White;

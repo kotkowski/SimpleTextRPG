@@ -6,38 +6,107 @@ namespace SimpleTextRPG
 {
     public static class Player
     {
+        static public int maxhealth = 100;
         static public int health = 100;
         static public int damage = 5;
         static public int defence = 5;
+        static public int speed = 5;
         static public int gold = 0;
         static public int level = 1;
         public static bool GameInProgress = true;
         public static int exp = 0;
+        public static bool check = false;
+        public static bool run = false;
         public static int x = 4;
         public static int y = 4;
-        public static int encounter = 0;
-
+        public static int encounter = -1;
+        public static int levelup = 0;
+        public static bool GolemAlive = true;
+        public static List<Item> Inventory;
         public static int RequiredExp()
         {
-            return (level * 100 - exp);
+            return (level * 100);
         }
 
         public static void gainExp(int expGained)
         {
-            while (exp + expGained >= RequiredExp())
+            
+            Player.exp = Player.exp + expGained;
+            while (Player.exp  >= Player.RequiredExp())
             {
-                expGained = expGained - RequiredExp();
-                level++;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Level Up!");
-                Console.ForegroundColor = ConsoleColor.White;
-                exp = expGained;
+                Player.exp = Player.exp - Player.RequiredExp();
+                Player.level++;
+                Player.levelup = Player.levelup + 1;
+ 
+
             }
 
         }
-    
 
+        public static void LevelUp()
+        {
+            while (Player.levelup > 0)
+            {
+                Console.WriteLine("Damage +1");
+                Player.damage = Player.damage + 1;
+                Console.WriteLine("Max Health +5");
+                Player.maxhealth = Player.maxhealth + 5;
+                Player.health = Player.maxhealth;
+                Player.levelup = Player.levelup - 1;
+                Player.level = Player.level++;
+            }
+        }
 
+        public static void RunAway()
+        {
+
+            int tmp = GameModel.EventRandomizerRnd.Next(100);
+            if (tmp <= Player.speed)
+            {
+                Player.encounter = -8;
+            }
+            else
+            {
+                Player.run = true;
+            }
+
+        }
+        public static void Attack()
+        {
+            if (Player.damage > Creature.defence)
+            {
+                Creature.health = Creature.health - (Player.damage - Creature.defence);
+                if (Creature.health <= 0)
+                {
+                    Player.gold = Player.gold + Creature.goldreward;
+                    Player.gainExp(Creature.xpreward);
+                    if (Player.encounter == 666)
+                    {
+                        GolemAlive = false;
+                        Player.Inventory.Add(GameModel.Items[100]) ;
+                        Player.encounter = -666;
+                    }
+                    else
+                    {
+                        Player.encounter = 0;
+                    }
+                    
+                   
+                    
+                }
+            }
+            else
+            {
+                Creature.health = Creature.health - 1;
+                if (Creature.health <= 0)
+                {
+                    Player.gold = Player.gold + Creature.goldreward;
+                    Player.gainExp(Creature.xpreward);
+                    Player.encounter = 0;
+                }
+            }
+
+        }
 
     }
 
@@ -46,12 +115,99 @@ namespace SimpleTextRPG
         public static string name = "Unknown Creature";
         public static int maxhealth = 20;
         public static int health = 20;
+        public static int healing = 5;
         public static int damage = 3;
         public static int defence = 0;
         public static int chargeddamage = 5*damage;
         public static int xpreward = 5;
+        public static int hurtTreshold = 1;
+        
         public static int goldreward = 5;
         public static State stateofenemy = State.Idle;
+
+        public static void Attack()
+        {
+            switch (Creature.stateofenemy)
+            {
+                case State.Idle:
+                    if (Creature.damage > Player.defence)
+                    {
+                        Player.health = Player.health - (Creature.damage - Player.defence);
+                        if (Player.health < 1)
+                        {
+                            Player.x = 4; Player.y = 4; Player.encounter = -42;
+                        }
+                    }
+                    else
+                    {
+                        Player.health = Player.health - 1;
+                        if (Player.health < 1)
+                        {
+                            Player.x = 4; Player.y = 4; Player.encounter = -42;
+                        }
+                    }
+                    if (Creature.health < Creature.hurtTreshold)
+                    {
+                        Creature.stateofenemy = State.Healing;
+                    }
+                    else
+                    {
+                        int tmp = GameModel.EventRandomizerRnd.Next(100);
+                        if (tmp < 75)
+                        {
+                            Creature.stateofenemy = State.Idle;
+                        }
+                        else
+                        {
+                            Creature.stateofenemy = State.Preparing;
+                        }
+                    }
+                    break;
+                case State.Preparing:
+                    if (Creature.chargeddamage > Player.defence)
+                    {
+                        Player.health = Player.health - (Creature.chargeddamage - Player.defence);
+                        if (Player.health < 1)
+                        {
+                            Player.x = 4; Player.y = 4; Player.encounter = -42;
+                        }
+                    }
+                    else
+                    {
+                        Player.health = Player.health - 1;
+                        if (Player.health < 1)
+                        {
+                            Player.x = 4; Player.y = 4; Player.encounter = -42;
+                        }
+                    }
+                    if (Creature.health < Creature.hurtTreshold)
+                    {
+                        Creature.stateofenemy = State.Healing;
+                    }
+                    else
+                    { Creature.stateofenemy = State.Idle; }
+                    break;
+                case State.Healing:
+                    if (Creature.health + Creature.healing > Creature.maxhealth)
+                    {
+                        Creature.health = Creature.maxhealth;
+                    }
+                    else
+                    {
+                        Creature.health = Creature.health + Creature.healing;
+                    }
+                    if (Creature.health < Creature.hurtTreshold)
+                    {
+                        Creature.stateofenemy = State.Healing;
+                    }
+                    else
+                    { Creature.stateofenemy = State.Idle; }
+
+
+                    break;
+
+            }
+        }
 
 
         public enum State
@@ -61,7 +217,25 @@ namespace SimpleTextRPG
             Preparing = 2,
             Healing = 3
         }
+        public static List<string> CreatureState = new List<string>(3)
+        {
+            " is waiting for your move!","Debug message, shouldn't appear" ," is preparing heavy attack!", " is planning to rest!"
+        };
 
+        public static void InitializeBossFight()
+        {
+            Player.encounter = 666;
+            Creature.name = "Gem Guardian (Boss)";
+            Creature.maxhealth = 750;
+            Creature.health = 750;
+            Creature.hurtTreshold = 100;
+            Creature.healing = 30;
+            Creature.damage = 30;
+            Creature.defence = 20;
+            Creature.chargeddamage = 5 * Creature.damage;
+            Creature.xpreward = 500;
+            Creature.goldreward = 9001;
+        }
         public static void Randomize()
         {
             string modifier = "";
@@ -86,6 +260,8 @@ namespace SimpleTextRPG
                     health = 15;
                     damage = 3;
                     defence = 0;
+                    healing = 0;
+                    hurtTreshold = -1;
                     chargeddamage = 5 * damage;
                     goldreward = 1;
                     xpreward = 20;
@@ -96,6 +272,8 @@ namespace SimpleTextRPG
                     health = 45;
                     damage = 10;
                     defence = 5;
+                    healing = 5;
+                    hurtTreshold = 10;
                     chargeddamage = 5 * damage;
                     goldreward = 20;
                     xpreward = 60;
@@ -106,6 +284,8 @@ namespace SimpleTextRPG
                     health = 5;
                     damage = 1;
                     defence = 20;
+                    healing = 0;
+                    hurtTreshold = -1;
                     chargeddamage = 5 * damage;
                     goldreward = 0;
                     xpreward = 10;
@@ -116,6 +296,8 @@ namespace SimpleTextRPG
                     health = 70;
                     damage = 10;
                     defence = 10;
+                    healing = 0;
+                    hurtTreshold = -1;
                     chargeddamage = 5 * damage;
                     goldreward = 600;
                     xpreward = 200;
@@ -125,6 +307,8 @@ namespace SimpleTextRPG
                     maxhealth = 20;
                     health = 20;
                     damage = 1;
+                    healing = 20;
+                    hurtTreshold = 5;
                     defence = 60;
                     chargeddamage = 5 * damage;
                     goldreward = 1200;
@@ -135,6 +319,8 @@ namespace SimpleTextRPG
                     maxhealth = 35;
                     health = 35;
                     damage = 20;
+                    healing = 5;
+                    hurtTreshold = 10;
                     defence = 5;
                     chargeddamage = 5 * damage;
                     goldreward = 300;
@@ -209,4 +395,6 @@ namespace SimpleTextRPG
         Thirsty,
         Hungry
     }
+
+    
 }

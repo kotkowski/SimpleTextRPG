@@ -6,10 +6,8 @@ namespace SimpleTextRPG
     {
         static void Main(string[] args)
         {
+            GameModel.GameStart();
             Map mapa = new Map(10);
-            Console.WriteLine(mapa.Randomize(10));
-            Player.gainExp(105);
-            Console.WriteLine(Player.exp);
             GameModel.drawGui(mapa);
 
 
