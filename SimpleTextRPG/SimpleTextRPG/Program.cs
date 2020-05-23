@@ -21,8 +21,6 @@ namespace SimpleTextRPG
 - Fixing some bugs
 - Implementing Items
 - Implementing Shops
-- Implementing "Check Stats"
 - Implementing Inns
 - Implementing Story
-- Implementing Fight
  */

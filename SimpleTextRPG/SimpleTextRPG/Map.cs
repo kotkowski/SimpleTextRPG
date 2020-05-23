@@ -257,42 +257,86 @@ namespace SimpleTextRPG
 
         public void checkMap()
         {
-            for (int i = 0; i < mapsize; i++)
+            if (Player.map == true)
             {
-                for (int y = 0; y < mapsize; y++)
+                for (int i = 0; i < mapsize; i++)
                 {
-                    if(i == Map.GemX && y == Map.GemY && Player.GolemAlive==true)
+                    for (int y = 0; y < mapsize; y++)
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        if (i == Map.GemX && y == Map.GemY && Player.GolemAlive == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
+                        if (i == Player.x && y == Player.y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+
+                        Console.Write(map[i, y].symbol);
+
+                        Console.ForegroundColor = ConsoleColor.White;
+
+
+
                     }
-                    if(i == Player.x && y == Player.y )
+                    if (i == 0)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    W");
+
                     }
-                    
-                    Console.Write(map[i, y].symbol);
-                    
-                    Console.ForegroundColor = ConsoleColor.White;
+                    if (i == 1)
+                    {
+                        Console.Write("   ASD");
 
-                    
-
+                    }
+                    Console.WriteLine();
                 }
-                if (i == 0)
-                {
-                    Console.Write("    W");
-
-                }
-                if (i == 1)
-                {
-                    Console.Write("   ASD");
-
-                }
-                Console.WriteLine();
             }
+            else
+            {
+                for (int i = 0; i < mapsize; i++)
+                {
+                    for (int y = 0; y < mapsize; y++)
+                    {
+                        
+                        if ((Player.x - i == 0 || Player.x - i == 1 || Player.x - i == -1) &&( Player.y - y == 0 || Player.y - y == 1 || Player.y - y == -1))
+                        {
+                            
+                            if (i == Player.x && y == Player.y)
+                            { Console.ForegroundColor = ConsoleColor.Red; }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                            }
+                            Console.Write(map[i, y].symbol);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        
 
-            
+                        Console.Write("?");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+
+
+
+                    }
+                    if (i == 0)
+                    {
+                        Console.Write("    W");
+
+                    }
+                    if (i == 1)
+                    {
+                        Console.Write("   ASD");
+
+                    }
+                    Console.WriteLine();
+                }
+
+
+            }
         }
-
         
     }
 }

@@ -16,7 +16,7 @@ namespace SimpleTextRPG
         // 1 - consumable
         // 2 - equipment
         // 3 - key item
-        public string name = "Invalid Item";
+        public string name = "None";
         public int price = 0;
         public int def = 0;
         public int dmg = 0;
@@ -24,10 +24,164 @@ namespace SimpleTextRPG
         public int speed = 0;
         public int restoredhp = 0;
         public bool equipped = false;
+
+        public void Use()
+        {
+            switch(this.type)
+            {
+                case 0:
+                    throw new Exception("Invalid Type");
+                    
+                case 1:
+                    int amount;
+                    bool ifexists = Player.Inventory.TryGetValue(this, out amount);
+                    if(ifexists)
+                    {
+                        if(Player.health + this.restoredhp > Player.maxhealth)
+                        {
+                            Player.health = Player.maxhealth;
+                        }
+                        else
+                        {
+                            Player.health = Player.health + this.restoredhp;
+                        }
+                        
+                        Player.Inventory.Remove(this);
+                        if (amount > 0)
+                            Player.Inventory.Add(this, amount - 1);
+
+                    }
+                    break;
+                case 2:
+                    {
+                        switch (this.slot)
+                        {
+                            case 1:
+                                Player.defence = Player.defence - Player.weaponequipped.def;
+                                Player.maxhealth = Player.maxhealth - Player.weaponequipped.hp;
+                                Player.speed = Player.speed - Player.weaponequipped.speed;
+                                Player.damage = Player.damage - Player.weaponequipped.dmg;
+                                Player.weaponequipped.equipped = false;
+                                Player.weaponequipped = this;
+                                this.equipped = true;
+                                Player.defence = Player.defence + Player.weaponequipped.def;
+                                Player.maxhealth = Player.maxhealth + Player.weaponequipped.hp;
+                                Player.speed = Player.speed + Player.weaponequipped.speed;
+                                Player.damage = Player.damage + Player.weaponequipped.dmg;
+                                break;
+                            case 2:
+                                Player.defence = Player.defence - Player.armorequipped.def;
+                                Player.maxhealth = Player.maxhealth - Player.armorequipped.hp;
+                                Player.speed = Player.speed - Player.armorequipped.speed;
+                                Player.damage = Player.damage - Player.armorequipped.dmg;
+                                Player.armorequipped.equipped = false;
+                                Player.armorequipped = this;
+                                this.equipped = true;
+                                Player.defence = Player.defence + Player.armorequipped.def;
+                                Player.maxhealth = Player.maxhealth + Player.armorequipped.hp;
+                                Player.speed = Player.speed + Player.armorequipped.speed;
+                                Player.damage = Player.damage + Player.armorequipped.dmg;
+                                break;
+                            case 3:
+                                Player.defence = Player.defence - Player.ringequipped.def;
+                                Player.maxhealth = Player.maxhealth - Player.ringequipped.hp;
+                                Player.speed = Player.speed - Player.ringequipped.speed;
+                                Player.damage = Player.damage - Player.ringequipped.dmg;
+                                Player.ringequipped.equipped = false;
+                                Player.ringequipped = this;
+                                this.equipped = true;
+                                Player.defence = Player.defence + Player.ringequipped.def;
+                                Player.maxhealth = Player.maxhealth + Player.ringequipped.hp;
+                                Player.speed = Player.speed + Player.ringequipped.speed;
+                                Player.damage = Player.damage + Player.ringequipped.dmg;
+                                break;
+                            default:
+                                throw new Exception("Unknown ID");
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        break;
+                    }
+                default:
+                    throw new Exception("Invalid Item Type");
+            }
+            
+        }
+        public static void AddItem(int id)
+        {
+            char key = GameModel.translateId(id);
+            Item i = GameModel.Items[char.ToUpper(key)];
+            switch (i.type)
+            {
+                case 1:
+                    {
+                        int amount;
+                        Player.Inventory.TryGetValue(i, out amount);
+                        
+                            Player.Inventory.Remove(i);
+                            if (amount >= 0)
+                                Player.Inventory.Add(i, amount + 1);
+                        }
+                    break;
+                case 2:
+                    {
+                        int amount;
+                        bool ifexists = Player.Inventory.TryGetValue(i, out amount);
+
+                        if (amount == 0)
+                        {
+                            Player.Inventory.Remove(i);
+                            Player.Inventory.Add(i, 1);
+                        }
+                        else
+                        {
+                            Player.encounter = -15;
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        int amount;
+                        bool ifexists = Player.Inventory.TryGetValue(i, out amount);
+
+                        if (amount == 0)
+                        {
+                            Player.Inventory.Remove(i);
+                            Player.Inventory.Add(i, 1);
+                            Player.map = true;
+                        }
+                        else
+                        {
+                            Player.encounter = -15;
+                        }
+                    }
+                    break;
+            }
+        }
         public Item(int id)
         {
             switch(id)
             {
+                case -1:
+                    slot = 1;
+                    type = 2;
+                    name = "None";
+                    equipped = true;
+                    break;
+                case -2:
+                    slot = 2;
+                    type = 2;
+                    name = "None";
+                    equipped = true;
+                    break;
+                case -3:
+                   slot = 1;
+                   type = 2;
+                    name = "None";
+                    equipped = true;
+                    break;
                 case 1:
                     this.name = "Small Health Potion";
                     this.restoredhp = 10;
@@ -55,6 +209,7 @@ namespace SimpleTextRPG
                 case 8:
                     this.name = "Map";
                     this.type = 3;
+                    this.price = 10;
                     break;
                 case 10:
                     this.name = "Wooden Sword";

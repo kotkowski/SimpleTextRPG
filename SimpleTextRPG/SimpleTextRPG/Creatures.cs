@@ -6,6 +6,11 @@ namespace SimpleTextRPG
 {
     public static class Player
     {
+        static public bool map = false;
+        static public Item weaponequipped = new Item(-1);
+        static public Item armorequipped = new Item(-2);
+        static public Item ringequipped = new Item(-2);
+        static public bool gemcontained = false;
         static public int maxhealth = 100;
         static public int health = 100;
         static public int damage = 5;
@@ -13,6 +18,7 @@ namespace SimpleTextRPG
         static public int speed = 5;
         static public int gold = 0;
         static public int level = 1;
+        static public bool inshop = false;
         public static bool GameInProgress = true;
         public static int exp = 0;
         public static bool check = false;
@@ -22,7 +28,65 @@ namespace SimpleTextRPG
         public static int encounter = -1;
         public static int levelup = 0;
         public static bool GolemAlive = true;
-        public static List<Item> Inventory;
+        public static Dictionary<Item, int> Inventory = new Dictionary<Item,int>();
+
+        public static void UseInventory()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("You take a moment, checking your backpack content: ");
+            foreach (KeyValuePair<Item, int> i in Player.Inventory)
+            {
+
+                if (i.Value != 0)
+                {
+                    GameModel.character = GameModel.KeyByValue(GameModel.Items, i.Key);
+                    Console.Write(GameModel.character + ">>>" + i.Key.name);
+                    if (i.Key.type == 1)
+                    {
+                        Console.Write(" --- Amount:" + i.Value);
+                    }
+                    else
+                    if(i.Key.type == 2 && i.Key.equipped == true)
+                    {
+                        Console.Write(" --- Equipped ");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine("X - Close  Backpack");
+            char key = 'l';
+            while (true)
+            {
+                string s = Console.ReadLine();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    key = s[0];
+
+                    break;
+                }
+
+            }
+            if (key == 'X' || key == 'x')
+            {
+            }
+            else
+            {
+                while (true)
+                {
+                    Item q;
+                    try
+                    {
+                        GameModel.Items.TryGetValue(char.ToUpper(key), out q);
+                        q.Use();
+                        break;
+                    }
+                    catch (Exception)
+                    { }
+
+                }
+            }
+
+        }
         public static int RequiredExp()
         {
             return (level * 100);
@@ -60,7 +124,7 @@ namespace SimpleTextRPG
         public static void RunAway()
         {
 
-            int tmp = GameModel.EventRandomizerRnd.Next(100);
+            int tmp = GameModel.EventRandomizerRnd.Next(25);
             if (tmp <= Player.speed)
             {
                 Player.encounter = -8;
@@ -83,7 +147,7 @@ namespace SimpleTextRPG
                     if (Player.encounter == 666)
                     {
                         GolemAlive = false;
-                        Player.Inventory.Add(GameModel.Items[100]) ;
+                        
                         Player.encounter = -666;
                     }
                     else
@@ -241,17 +305,17 @@ namespace SimpleTextRPG
             string modifier = "";
             Random rnd = new Random();
             int mod = -1;
-            int enemy = Convert.ToInt32(Math.Round((decimal)rnd.Next(0, 10)));
+            int enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(0, 10)));
             if(enemy > 5)
             {
-                enemy = Convert.ToInt32(Math.Round((decimal)rnd.Next(0, 8)));
+                enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(0, 8)));
                 modifier = ((RandomModifier)enemy).ToString();
                 modifier = string.Concat(modifier, " ");
                 mod = enemy;
 
             }
 
-            enemy = Convert.ToInt32(Math.Round((decimal)rnd.Next(0, 6)));
+            enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
             switch (enemy)
             {
                 case 1:

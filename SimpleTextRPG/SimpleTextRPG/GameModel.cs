@@ -6,35 +6,133 @@ namespace SimpleTextRPG
 {
     public static class GameModel
     {
-        public static Dictionary<int, Item> Items = new Dictionary<int, Item>(50);
+        
+        public static Dictionary<char, Item> Items = new Dictionary<char, Item>(50);
+        public static char character;
+        
+        public static T KeyByValue<T, W>(this Dictionary<T, W> dict, W val)
+        {
+            T key = default;
+            foreach (KeyValuePair<T, W> pair in dict)
+            {
+                if (EqualityComparer<W>.Default.Equals(pair.Value, val))
+                {
+                    key = pair.Key;
+                    break;
+                }
+            }
+            return key;
+        }
+
         public static void GameStart()
         {
-            
-
-            Items.Add(1, new Item(1));
-            Items.Add(2, new Item(2));
-            Items.Add(3, new Item(3));
-            Items.Add(4, new Item(4));
-            Items.Add(8, new Item(8));
-            Items.Add(10, new Item(10));
-            Items.Add(11, new Item(11));
-            Items.Add(12, new Item(12));
-            Items.Add(13, new Item(13));
-            Items.Add(14, new Item(14));
-            Items.Add(15, new Item(15));
-            Items.Add(20, new Item(20));
-            Items.Add(21, new Item(21));
-            Items.Add(22, new Item(22));
-            Items.Add(23, new Item(23));
-            Items.Add(24, new Item(24));
-            Items.Add(30, new Item(30));
-            Items.Add(31, new Item(31));
-            Items.Add(32, new Item(32));
-            Items.Add(33, new Item(33));
-            Items.Add(100, new Item(100));
+            Items.Add('1', new Item(1));
+            Items.Add('2', new Item(2));
+            Items.Add('3', new Item(3));
+            Items.Add('4', new Item(4));
+            Items.Add('5', new Item(8));
+            Items.Add('6', new Item(10));
+            Items.Add('7', new Item(11));
+            Items.Add('8', new Item(12));
+            Items.Add('9', new Item(13));
+            Items.Add('Q', new Item(14));
+            Items.Add('W', new Item(20));
+            Items.Add('E', new Item(21));
+            Items.Add('R', new Item(22));
+            Items.Add('T', new Item(23));
+            Items.Add('Y', new Item(24));
+            Items.Add('U', new Item(30));
+            Items.Add('I', new Item(31));
+            Items.Add('O', new Item(32));
+            Items.Add('P', new Item(33));
+            Items.Add('L', new Item(100));
+            Player.Inventory.Add(new Item(1), 0);
+            Player.Inventory.Add(new Item(2), 0);
+            Player.Inventory.Add(new Item(3), 0);
+            Player.Inventory.Add(new Item(4), 0);
+            Player.Inventory.Add(new Item(8), 0);
+            Player.Inventory.Add(new Item(10), 0);
+            Player.Inventory.Add(new Item(11), 0);
+            Player.Inventory.Add(new Item(12), 0);
+            Player.Inventory.Add(new Item(13), 0);
+            Player.Inventory.Add(new Item(14), 0);
+            Player.Inventory.Add(new Item(20), 0);
+            Player.Inventory.Add(new Item(21), 0);
+            Player.Inventory.Add(new Item(22), 0);
+            Player.Inventory.Add(new Item(23), 0);
+            Player.Inventory.Add(new Item(24), 0);
+            Player.Inventory.Add(new Item(30), 0);
+            Player.Inventory.Add(new Item(31), 0);
+            Player.Inventory.Add(new Item(32), 0);
+            Player.Inventory.Add(new Item(33), 0);
             
         }
         
+        public static char translateId(int id)
+        {
+            char key = 'l';
+            switch (id)
+            {
+                case 1:
+                    key = '1';
+                    break;
+                case 2:
+                    key = '2';
+                    break;
+                case 3:
+                    key = '3';
+                    break;
+                case 4:
+                    key = '4';
+                    break;
+                case 8:
+                    key = '5';
+                    break;
+                case 10:
+                    key = '6';
+                    break;
+                case 11:
+                    key = '7';
+                    break;
+                case 12:
+                    key = '8';
+                    break;
+                case 13:
+                    key = '9';
+                    break;
+                case 14:
+                    key = 'Q';
+                    break;
+                case 20:
+                    key = 'W';
+                    break;
+                case 21:
+                    key = 'E';
+                    break;
+                case 22:
+                    key = 'R';
+                    break;
+                case 23:
+                    key = 'T';
+                    break;
+                case 24:
+                    key = 'Y';
+                    break;
+                case 30:
+                    key = 'U';
+                    break;
+                case 31:
+                    key = 'I';
+                    break;
+                case 32:
+                    key = 'O';
+                    break;
+                case 33:
+                    key = 'P';
+                    break;
+            }
+            return key;
+        }
         public static Random EventRandomizerRnd = new Random();
         public static void EventRandomizer()
         {
@@ -78,6 +176,7 @@ namespace SimpleTextRPG
         public static void drawGui(Map map)
         {
             
+            
             char key = '0';
             int state = 0;
             string s = "";
@@ -86,7 +185,7 @@ namespace SimpleTextRPG
             while (Player.GameInProgress)
             {
                 Console.Clear();
-                if(Player.x == Map.GemX && Player.y == Map.GemY)
+                if (Player.x == Map.GemX && Player.y == Map.GemY)
                 {
                     Creature.InitializeBossFight();
                 }
@@ -94,12 +193,26 @@ namespace SimpleTextRPG
                 switch (Map.map[Player.x, Player.y].symbol)
                 {
                     case 'V':
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("===///==@@@=///===@==//////====");
-                        Console.WriteLine("===|$|=@@#@@|=|==@#@=|==<>|====");
-                        Console.WriteLine("===|=|===#==|=|===#==|$=<>|====");
-                        Console.WriteLine("===|$|===#==|$|===#==|$=<>|====");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        if (Player.inshop == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("=====######5=======^^^^^^^=====");
+                            Console.WriteLine("===========5======/==O==O=L====");
+                            Console.WriteLine("==7777777=====$==/====V====L===");
+                            Console.WriteLine("====7777=====$==/===========L==");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("===///==@@@=///===@==//////====");
+                            Console.WriteLine("===|$|=@@#@@|=|==@#@=|==<>|====");
+                            Console.WriteLine("===|=|===#==|=|===#==|$=<>|====");
+                            Console.WriteLine("===|$|===#==|$|===#==|$=<>|====");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                        }
                         break;
                     case 'F':
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -137,17 +250,25 @@ namespace SimpleTextRPG
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("You're currently at ");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(Map.map[Player.x, Player.y].name);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(Map.map[Player.x, Player.y].desc); ;
-                Console.ForegroundColor = ConsoleColor.Green;
+                if (Player.inshop)
+                {
+                    Console.WriteLine("The Only Shop at " + Map.map[Player.x, Player.y].name);
+                }
+                else
+                {
+                    Console.WriteLine(Map.map[Player.x, Player.y].name);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(Map.map[Player.x, Player.y].desc); ;
+                    
+                }
+            
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("");
                 if (Map.map[Player.x, Player.y].symbol == 'V')
                 {
                     Console.WriteLine("You're safe here!");
                 }
-                else if (Player.encounter < 1)
+                else if (Player.encounter == -1)
                 { EventRandomizer(); }
                 
                 if(Player.levelup > 0)
@@ -168,21 +289,37 @@ namespace SimpleTextRPG
                         Console.WriteLine("You've gained " + Creature.xpreward + " xp and " + Creature.goldreward + " gold!");
                         Player.encounter = -1;
                         break;
+                    case -8:
+                        Player.encounter = -1;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("You've run away");
+                        Player.run = false;
+                        break;
+                    case -15:
+                        Player.encounter = -1;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("You are holding too many items of that kind.");
+                        Player.run = false;
+                        break;
+                    case -24:
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("You don't have enough money!");
+                        Player.encounter = -1;
+                        break;
                     case -42:
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("You took too much damage. You lost your consciousness.");
                         Console.WriteLine("Yet somehow, you made it back to the city, losing some coins.");
                         Player.health = Player.maxhealth;
+                        Player.run = false;
                         Player.gold = (int)Math.Round(Player.gold * 0.8);
                         Player.encounter = -1;
                         break;
-                    case -8:
-                        Player.encounter = -1;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("You've run away");
-                        break;
+                    
                     case -666:
                         Player.encounter = -1;
+                        Player.gemcontained = true;
+                        Player.Inventory.Add(new Item(100), 1);
                         Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("You've aquired the Legendary Gem! ");
                            Console.WriteLine("Bring it to the Village! ");
@@ -195,6 +332,11 @@ namespace SimpleTextRPG
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("==============================");
                 Console.ForegroundColor = ConsoleColor.White;
+                if (Player.inshop == true)
+                {
+                    state = 100;
+                }
+                else
                 if (Player.x == 4 && Player.y == 4)
                 {
                     state = 1;
@@ -228,71 +370,78 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
-
-                        while (true)
-                        {
-                            s = Console.ReadLine();
-                            if (!string.IsNullOrEmpty(s))
+                        
+                            while (true)
                             {
-                                key = s[0];
+                                s = Console.ReadLine();
+                                if (!string.IsNullOrEmpty(s))
+                                {
+                                    key = s[0];
 
-                                break;
+                                    break;
+                                }
+
                             }
-
-                        }
-                        switch (key)
-                        {
-                            case '1':
-                                map.checkMap();
-                                Console.ReadKey();
-                                drawGui(map);
-                                break;
-                            case '2':
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("==============================");
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
-                                Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("==============================");
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.WriteLine("Where would you like to go?");
-                                Console.WriteLine("W - North");
-                                Console.WriteLine("S - South");
-                                Console.WriteLine("A - West");
-                                Console.WriteLine("D - East");
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("==============================");
-                                Console.ForegroundColor = ConsoleColor.White;
-
-                                while (true)
-                                {
-                                    s = Console.ReadLine();
-                                    if (!string.IsNullOrEmpty(s))
+                            switch (key)
+                            {
+                                case '1':
+                                    map.checkMap();
+                                    Console.ReadKey();
+                                    drawGui(map);
+                                    
+                                    break;
+                                case '2':
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("==============================");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
+                                    Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("==============================");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.WriteLine("Where would you like to go?");
+                                    Console.WriteLine("W - North");
+                                    Console.WriteLine("S - South");
+                                    Console.WriteLine("A - West");
+                                    Console.WriteLine("D - East");
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("==============================");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    
+                                    while (true)
                                     {
-                                        key = s[0];
+                                        s = Console.ReadLine();
+                                        if (!string.IsNullOrEmpty(s))
+                                        {
+                                            key = s[0];
 
-                                        break;
+                                            break;
+                                        }
+
                                     }
+                                    switch (key)
+                                    {
+                                        case 'W': if (Player.x != 0) Player.x = Player.x - 1; break; // Ruch o 1 pole w górę
+                                        case 'S': if (Player.x != (Map.mapsize - 1)) Player.x = Player.x + 1; break; // Ruch o 1 pole w górę
+                                        case 'A': if (Player.y != 0) Player.y = Player.y - 1; break; // Ruch o 1 pole w górę
+                                        case 'D': if (Player.y != (Map.mapsize - 1)) Player.y = Player.y + 1; break; // Ruch o 1 pole w górę
+                                        case 'w': if (Player.x != 0) Player.x = Player.x - 1; break; // Ruch o 1 pole w górę
+                                        case 's': if (Player.x != (Map.mapsize - 1)) Player.x = Player.x + 1; break; // Ruch o 1 pole w górę
+                                        case 'a': if (Player.y != 0) Player.y = Player.y - 1; break; // Ruch o 1 pole w górę;
+                                        case 'd': if (Player.y != (Map.mapsize - 1)) Player.y = Player.y + 1; break; // Ruch o 1 pole w górę;
 
-                                }
-                                switch (key)
-                                {
-                                    case 'W': if (Player.x != 0)  Player.x =  Player.x - 1; break; // Ruch o 1 pole w górę
-                                    case 'S': if (Player.x != (Map.mapsize -1)) Player.x = Player.x + 1; break; // Ruch o 1 pole w górę
-                                    case 'A': if (Player.y != 0) Player.y = Player.y - 1; break; // Ruch o 1 pole w górę
-                                    case 'D': if (Player.y != (Map.mapsize - 1)) Player.y = Player.y + 1; break; // Ruch o 1 pole w górę
-                                    case 'w': if (Player.x != 0)  Player.x =  Player.x - 1;  break; // Ruch o 1 pole w górę
-                                    case 's': if (Player.x != (Map.mapsize - 1))  Player.x = Player.x + 1;  break; // Ruch o 1 pole w górę
-                                    case 'a': if (Player.y != 0) Player.y = Player.y - 1;  break; // Ruch o 1 pole w górę;
-                                    case 'd': if (Player.y != (Map.mapsize - 1)) Player.y = Player.y + 1;  break; // Ruch o 1 pole w górę;
+                                    }
+                                    drawGui(map);
+                                    break;
+                                case '3':
 
-                                }
-                                drawGui(map);
-                                break;
-                            default: drawGui(map); break;
-                        }
-                        break;
+                                    Player.UseInventory();
+                                    break;
+                                default: drawGui(map); break;
+                            }
+                        
+                            break;
+                        
                     case 1:
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
@@ -306,7 +455,7 @@ namespace SimpleTextRPG
                         Console.WriteLine("1.Check map");
                         Console.WriteLine("2.Move");
                         Console.WriteLine("3.Check Inventory");
-                        Console.WriteLine("4.Visit Tavern");
+                        Console.WriteLine("4.Visit Tavern (Recover HP for 5 gold)");
                         Console.WriteLine("5.Visit Shop");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
@@ -372,12 +521,24 @@ namespace SimpleTextRPG
                                 drawGui(map);
                                 break;
                             case '3':
-                                Console.WriteLine("");
-                                Console.WriteLine("You take a moment, checking your backpack content: ");
-                                
+                                Player.UseInventory();
                                 break;
-                            case '4': Player.gainExp(105); break;
 
+
+                            case '4': if (Player.gold > 5)
+                                {
+                                    Player.gold = Player.gold - 5;
+                                    Player.health = Player.maxhealth;
+                                }
+                            else
+                                {
+                                    Player.encounter = -24;
+                                }
+
+                                 break;
+                            case '5':
+                                Player.inshop = true;
+                                break;
                         }
                         break;
                     case 2:
@@ -394,7 +555,9 @@ namespace SimpleTextRPG
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("You've failed to run away!");
+                            Player.run = false;
                             Console.ForegroundColor = ConsoleColor.White;
+
                         }
                         if (Player.check == true)
                         {
@@ -411,7 +574,7 @@ namespace SimpleTextRPG
                         Console.WriteLine("2.Check (Check your enemy stats)");
                         Console.WriteLine("3.Defend (Reduce incoming damage by (" + 5*Player.defence+"))");
                         Console.WriteLine("4.Inventory");
-                        Console.WriteLine("5.Try running away (Roll ("+ Player.speed +") in 100 chance, trying to escape)");
+                        Console.WriteLine("5.Try running away (Roll ("+ Player.speed +") in 25 chance, trying to escape)");
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -432,10 +595,93 @@ namespace SimpleTextRPG
                             case '1': Player.Attack(); Creature.Attack();  break;
                             case '2': Player.check = true; Creature.Attack(); break;
                             case '3': Player.defence = Player.defence * 5; Creature.Attack(); Player.defence = Player.defence / 5; break;
-                            case '4': break;
+                            case '4':
+                                Player.UseInventory();
+                                break; 
                             case '5': Player.RunAway(); Creature.Attack(); break;
                             default: break;
                         }
+                        break;
+                    case 100:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("==============================");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
+                        Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("==============================");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Hello There!");
+                        Console.WriteLine("Do you need anything?");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("==============================");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Buy gear:");
+
+
+                        foreach (KeyValuePair<char, Item> i in Items)
+                        {
+                            if(i.Key !='L')
+                                Console.WriteLine( i.Key + ">>>" + i.Value.name + " --- " + i.Value.price + " gold");
+                                
+                            
+                        }
+                        
+                        
+                        Console.WriteLine("X.Leave Shop");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("==============================");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        while (true)
+                        {
+                            s = Console.ReadLine();
+                            if (!string.IsNullOrEmpty(s))
+                            {
+                                key = s[0];
+
+                                break;
+                            }
+
+                        }
+                        Item q = new Item(1);
+
+                        switch(key)
+                        {
+                            case '1':  Items.TryGetValue('1', out q);  if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(1); } else { Player.encounter = -24; } ;  break;
+                            case '2': Items.TryGetValue('2', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(2); } else { Player.encounter = -24; }; break;
+                            case '3': Items.TryGetValue('3', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(3); } else { Player.encounter = -24; }; break;
+                            case '4': Items.TryGetValue('4', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(4); } else { Player.encounter = -24; }; break;
+                            case '5': Items.TryGetValue('5', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(8); } else { Player.encounter = -24; }; break;
+                            case '6': Items.TryGetValue('6', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(10); } else { Player.encounter = -24; }; break;
+                            case '7': Items.TryGetValue('7', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(11); } else { Player.encounter = -24; }; break;
+                            case '8': Items.TryGetValue('8', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(12); } else { Player.encounter = -24; }; break;
+                            case '9': Items.TryGetValue('9', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(13); } else { Player.encounter = -24; }; break;
+                            case 'Q': Items.TryGetValue('Q', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(14); } else { Player.encounter = -24; }; break;
+                            case 'q': Items.TryGetValue('Q', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(14); } else { Player.encounter = -24; }; break;
+                            case 'W': Items.TryGetValue('W', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(20); } else { Player.encounter = -24; }; break;
+                            case 'w': Items.TryGetValue('W', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(20); } else { Player.encounter = -24; }; break;
+                            case 'E': Items.TryGetValue('E', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(21); } else { Player.encounter = -24; }; break;
+                            case 'e': Items.TryGetValue('E', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(21); } else { Player.encounter = -24; }; break;
+                            case 'R': Items.TryGetValue('R', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(22); } else { Player.encounter = -24; }; break;
+                            case 'r': Items.TryGetValue('R', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(22); } else { Player.encounter = -24; }; break;
+                            case 'T': Items.TryGetValue('T', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(23); } else { Player.encounter = -24; }; break;
+                            case 't': Items.TryGetValue('T', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(23); } else { Player.encounter = -24; }; break;
+                            case 'Y': Items.TryGetValue('Y', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(24); } else { Player.encounter = -24; }; break;
+                            case 'y': Items.TryGetValue('Y', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(24); } else { Player.encounter = -24; }; break;
+                            case 'U': Items.TryGetValue('U', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(30); } else { Player.encounter = -24; }; break;
+                            case 'u': Items.TryGetValue('U', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(30); } else { Player.encounter = -24; }; break;
+                            case 'I': Items.TryGetValue('I', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(31); } else { Player.encounter = -24; }; break;
+                            case 'i': Items.TryGetValue('I', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(31); } else { Player.encounter = -24; }; break;
+                            case 'O': Items.TryGetValue('O', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(32); } else { Player.encounter = -24; }; break;
+                            case 'o': Items.TryGetValue('O', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(32); } else { Player.encounter = -24; }; break;
+                            case 'P': Items.TryGetValue('P', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(33); } else { Player.encounter = -24; }; break;
+                            case 'p': Items.TryGetValue('P', out q); if (Player.gold >= q.price) { Player.gold = Player.gold - q.price; Item.AddItem(33); } else { Player.encounter = -24; }; break;
+                            case 'X': Player.inshop = false;  break;
+                            case 'x': Player.inshop = false; break;
+                            
+                           
+                        }
+
                         break;
                     default: drawGui(map); break;
 
