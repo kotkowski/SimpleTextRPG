@@ -6,38 +6,38 @@ namespace SimpleTextRPG
 {
     public class Item
     {
-        public int slot = 0;
+        public int slot = 0; // slot ekwipowania, umożliwia wyekwipowanie danego przedmiotu na danym slocie
         // 0 - unequipable
         // 1 - weapon
         // 2 - armor
         // 3 - ring
-        public int type = 0;
+        public int type = 0; //typ przedmiotu, decyduje o tym czy jest to przedmiot kluczowy, jednorazowy czy ekwipunek
         // 0 - invalid
         // 1 - consumable
         // 2 - equipment
         // 3 - key item
-        public string name = "None";
-        public int price = 0;
-        public int def = 0;
-        public int dmg = 0;
-        public int hp = 0;
-        public int speed = 0;
-        public int restoredhp = 0;
-        public bool equipped = false;
+        public string name = "None"; //nazwa przedmiotu, standardowo "żadna"
+        public int price = 0; //cena przedmiotu, używana do jego zakupu w sklepie
+        public int def = 0; //ilość obrony dodawana przez przedmiot
+        public int dmg = 0; //ilośc obrażeń dodawana przez przedmiot
+        public int hp = 0; //ilość maksymalnego zdrowia dodawana przez przedmiot
+        public int speed = 0; //ilość statystyki prędkości dodawana przez przedmiot
+        public int restoredhp = 0; //ilość zdrowia regenerowana przez przedmiot (eliksiry)
+        public bool equipped = false; //czy przedmiot jest wyekwipowany
 
-        public void Use()
+        public void Use() //funkcja używa przedmiotu
         {
-            switch(this.type)
+            switch(this.type) //w zależności od typu przedmiotu wywołuje działanie
             {
                 case 0:
                     throw new Exception("Invalid Type");
                     
-                case 1:
+                case 1://Jeżeli to jest przedmiot jednorazowy
                     int amount;
-                    bool ifexists = Player.Inventory.TryGetValue(this, out amount);
-                    if(ifexists)
+                    bool ifexists = Player.Inventory.TryGetValue(this, out amount); //Pobiera ilość przedmiotów tego typu i zapisuje je w zmiennej amount
+                    if(ifexists) //Jeżeli są jakiekolwiek przedmioty tego typu
                     {
-                        if(Player.health + this.restoredhp > Player.maxhealth)
+                        if(Player.health + this.restoredhp > Player.maxhealth) //Leczy gracza "restoredhp" punktów zdrowia, lub do pełna jeżeli gracz miałby ponad punktów zdrowia ponad max
                         {
                             Player.health = Player.maxhealth;
                         }
@@ -46,17 +46,17 @@ namespace SimpleTextRPG
                             Player.health = Player.health + this.restoredhp;
                         }
                         
-                        Player.Inventory.Remove(this);
+                        Player.Inventory.Remove(this); //Usuwa przedmiot z ekwipunku i dodaje go z powrotem z -1 ilością
                         if (amount > 0)
                             Player.Inventory.Add(this, amount - 1);
 
                     }
                     break;
-                case 2:
+                case 2: //Jeżeli przedmiot to element ekwipunku
                     {
-                        switch (this.slot)
+                        switch (this.slot) //w zależności od slotu
                         {
-                            case 1:
+                            case 1: //Odejmuje statystyki starego ekwipunku, dodaje statystyki nowego, nowy ekwipunek staje się "equipped"
                                 Player.defence = Player.defence - Player.weaponequipped.def;
                                 Player.maxhealth = Player.maxhealth - Player.weaponequipped.hp;
                                 Player.speed = Player.speed - Player.weaponequipped.speed;
@@ -69,7 +69,7 @@ namespace SimpleTextRPG
                                 Player.speed = Player.speed + Player.weaponequipped.speed;
                                 Player.damage = Player.damage + Player.weaponequipped.dmg;
                                 break;
-                            case 2:
+                            case 2: //Odejmuje statystyki starego ekwipunku, dodaje statystyki nowego, nowy ekwipunek staje się "equipped"
                                 Player.defence = Player.defence - Player.armorequipped.def;
                                 Player.maxhealth = Player.maxhealth - Player.armorequipped.hp;
                                 Player.speed = Player.speed - Player.armorequipped.speed;
@@ -82,7 +82,7 @@ namespace SimpleTextRPG
                                 Player.speed = Player.speed + Player.armorequipped.speed;
                                 Player.damage = Player.damage + Player.armorequipped.dmg;
                                 break;
-                            case 3:
+                            case 3://Odejmuje statystyki starego ekwipunku, dodaje statystyki nowego, nowy ekwipunek staje się "equipped"
                                 Player.defence = Player.defence - Player.ringequipped.def;
                                 Player.maxhealth = Player.maxhealth - Player.ringequipped.hp;
                                 Player.speed = Player.speed - Player.ringequipped.speed;
@@ -100,7 +100,7 @@ namespace SimpleTextRPG
                         }
                     }
                     break;
-                case 3:
+                case 3: //Jeżeli to przedmiot kluczowy, nic nie robi
                     {
                         break;
                     }
@@ -109,13 +109,13 @@ namespace SimpleTextRPG
             }
             
         }
-        public static void AddItem(int id)
+        public static void AddItem(int id) //Dodaje przedmiot do ekwipunku gracza
         {
-            char key = GameModel.translateId(id);
-            Item i = GameModel.Items[char.ToUpper(key)];
-            switch (i.type)
+            char key = GameModel.translateId(id); //Bazując  na ID (lista na dole) - tłumaczy ID na char oznaczający przedmiot w słowniku z pliku GameModel.cs
+            Item i = GameModel.Items[char.ToUpper(key)]; //Pozyskuje przedmiot z wyżej wspomnianego słownika i przypisuje go do zmiennej i
+            switch (i.type) //w zależności od typu przedmiotu
             {
-                case 1:
+                case 1: //Jeżeli to przedmiot jednorazowy, usuwa wszystkie te przedmioty z ekwipunku gracza i przywraca je z ilością +1
                     {
                         int amount;
                         Player.Inventory.TryGetValue(i, out amount);
@@ -125,7 +125,8 @@ namespace SimpleTextRPG
                                 Player.Inventory.Add(i, amount + 1);
                         }
                     break;
-                case 2:
+                case 2: //Jeżeli to ekwipunek i gracz jeszcze nie posiada takiego ekwipunku, gracz otrzymuje ten ekwipunek, w innym wypadku wyświetlone zostaje powiadomienie
+                    //Encounter -15 - "przedmiot został pożarty", pieniądze nadal są zabierane
                     {
                         int amount;
                         bool ifexists = Player.Inventory.TryGetValue(i, out amount);
@@ -141,7 +142,8 @@ namespace SimpleTextRPG
                         }
                     }
                     break;
-                case 3:
+                case 3://Jeżeli to przedmiot kluczowy i gracz jeszcze nie posiada takiego przedmiotu, gracz otrzymuje ten przedmiot, w innym wypadku wyświetlone zostaje powiadomienie
+                    //Encounter -15 - "przedmiot został pożarty", pieniądze nadal są zabierane
                     {
                         int amount;
                         bool ifexists = Player.Inventory.TryGetValue(i, out amount);
@@ -160,7 +162,7 @@ namespace SimpleTextRPG
                     break;
             }
         }
-        public Item(int id)
+        public Item(int id) //Konstruktor, tworzy przedmiot korzystając z poniższej listy, wg. podanego ID
         {
             switch(id)
             {

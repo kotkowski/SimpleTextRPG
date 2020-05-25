@@ -6,22 +6,22 @@ namespace SimpleTextRPG
 {
     public class Location
     {
-        public char symbol = '*';
-        public char typ = '?';
-        public string name = "Unknown Location";
-        public string desc = "Place that should never exist";
+        public char symbol = '*'; //Symbol, reprezentuje lokacje na mapie
+        public char typ = '?'; // Typ - reprezentuje lokacje w funkcjach
+        public string name = "Unknown Location"; // Nazwa lokacji, wyświetlana w trakcie wizyty
+        public string desc = "Place that should never exist"; //Opis lokacji, wyświetlany w trakcie wizyty
 
-        public Location(string name, string description, char typ)
+        public Location(string name, string description, char typ) //Konstruktor, przypisuje wygenerowane wartości do lokacji
         {
             this.name = name;
             this.desc = description;
             switch(typ)
             {
-                case 'F': typ = 'F'; symbol = 'F'; break;
-                case 'C': typ = 'C';symbol = 'C';break;
-                case 'V': typ = 'V'; symbol = 'V'; break;
-                case 'M': typ = 'M'; symbol = 'M'; break;
-                case '*': typ = '?'; symbol = '?'; break;
+                case 'F': this.typ = 'F'; this.symbol = 'F'; break;
+                case 'C': this.typ = 'C';this.symbol = 'C';break;
+                case 'V': this.typ = 'V'; this.symbol = 'V'; break;
+                case 'M': this.typ = 'M'; this.symbol = 'M'; break;
+                case '*': this.typ = '?'; this.symbol = '?'; break;
                 default:
                     throw new ArgumentException("Wrong Location Type");
             }

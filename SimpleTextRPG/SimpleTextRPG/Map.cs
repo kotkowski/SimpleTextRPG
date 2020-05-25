@@ -6,12 +6,12 @@ namespace SimpleTextRPG
 {
     public class Map
     {
-        public static int mapsize;
-        public static Location[,] map;
-        public static int GemX =0;
-        public static int GemY = 0;
-        Random rand = new Random();
-        public Map(int size = 10)
+        public static int mapsize; //rozmiar mapy, standardowo na 10
+        public static Location[,] map; //tablica lokacji - "mapa"
+        public static int GemX =0; //koordynat X kryształu, losowany
+        public static int GemY = 0; //koordynat Y kryształu, losowany
+        Random rand = new Random(); //zmienna losowa do funkcji
+        public Map(int size = 10) //Generuje mapę
         {
             mapsize = size;
             Initialize();
@@ -21,8 +21,8 @@ namespace SimpleTextRPG
         {
             try
             {
-                map = new Location[mapsize, mapsize];
-                for (int i = 0; i < mapsize; i++)
+                map = new Location[mapsize, mapsize]; //Map = nowa talibca lokacji o rozmiarze mapsize/mapsize
+                for (int i = 0; i < mapsize; i++) //od 0 do mapsize losuj liczbę od 0 do 100 i utwórz zmienne tymczasowe
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
@@ -36,7 +36,7 @@ namespace SimpleTextRPG
                         string descmid;
                         string descsuffix;
                         string desc = "Invalid Description";
-                        if (i == 4 && y == 4)
+                        if (i == 4 && y == 4) //dla x i y = 4 (środek mapy) zawsze twórz lokacje typu wioska,losuj jej nazwę sposród 7 wartości enum (na dole pliku) i wybierz adekwatny opis
                         {
                             type = 'V';
                             tmp = rand.Next(7);
@@ -46,7 +46,7 @@ namespace SimpleTextRPG
                         }
                         else
                         {
-                            if (tmp < 60)
+                            if (tmp < 60) //jeżeli x/y != 4, ~60% na to, że lokacja będzie lasem, generuj nazwę używając 3 członów i adekwatne do nich opisy
                             {
                                 type = 'F';
                                 tmp = rand.Next(8);
@@ -64,7 +64,7 @@ namespace SimpleTextRPG
 
                             }
                             else
-                                if (tmp >= 60 && tmp < 90)
+                                if (tmp >= 60 && tmp < 90) //~30% na to, że lokacja będzie jaskinią, generuj nazwę używając 3 członów i adekwatne do nich opisy
                             {
                                 type = 'C';
                                 tmp = rand.Next(7);
@@ -82,7 +82,7 @@ namespace SimpleTextRPG
 
                             }
                             else
-                                if (tmp >= 90)
+                                if (tmp >= 90) //~10% na to, że lokacja będzie górami, generuj nazwę używając 2 członów i adekwatnych do nich opisów
                             { 
                                     type = 'M';
                                     tmp = rand.Next(3);
@@ -96,12 +96,12 @@ namespace SimpleTextRPG
                                  
                             }
                         }
-                        
+                        //Używając wylosowanych wyżej wartości, stwórz nową lokację na podanych koordynatach x(i) oraz y
                         map[i, y] = new Location(name, desc, type);
                     }
                 }
                 do
-                {
+                { // Po wygenerowaniu mapy, wylosuj lokalizację kryształu (za wyjątkiem wioski)
                     GemX = rand.Next(mapsize);
                     GemY = rand.Next(mapsize);
                 }
@@ -116,7 +116,7 @@ namespace SimpleTextRPG
 
         }
         
-        public int Randomize(int size)
+        public int Randomize(int size) //Losuje i zaokrągla wartość
         {
             int value = rand.Next(0, size);
             
@@ -124,7 +124,8 @@ namespace SimpleTextRPG
             return value;
         }
         
-
+        //Poniżej znajdują się tablice enum oraz tablice string (chociaż w obu przypadkach string byłyby lepsze...) 
+        //zawierające nazwy i opisy lokacji, spośród nich są losowane wartości do lokacji (jeszcze niżej, funkcja sprawdzająca mapę)
         enum ForestPrefix
         {
             Dark,
@@ -255,11 +256,13 @@ namespace SimpleTextRPG
             "Of Unfulfilled Dream", "That Everyone Knows", "OF DOOM", "Covered In Snow"
         };
 
-        public void checkMap()
+        public void checkMap() //Wyświetla dla gracza mapę
         {
-            if (Player.map == true)
+            if (Player.map == true) //Sprawdza, czy gracz posiada przedmiot mapa (nabycie tego przedmiotu przełącza trigger)
             {
                 for (int i = 0; i < mapsize; i++)
+                    //Jeżeli posiada, zostanie wyświetlona mapa lokacji z odpowiednimi symbolami, dodatkowo - na czerwono zostanie zaznaczone
+                    // pole z graczem, zaś na niebiesko pole z krysztalem niezbędnym do ukończenia gry
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
@@ -280,7 +283,7 @@ namespace SimpleTextRPG
 
                     }
                     if (i == 0)
-                    {
+                    {//Dodatkowy "smaczek" - "mini kompas", z kierunkami zastąpionymi literami WASD używanymi do sterowania po mapie
                         Console.Write("    W");
 
                     }
@@ -293,7 +296,7 @@ namespace SimpleTextRPG
                 }
             }
             else
-            {
+            {//Jeżeli gracz nie posiada mapy, zostaną wyświetlone jedynie jego własna lokacja, oraz te od których dzieli go jedno pole (poziome/pionowa/ukośne)
                 for (int i = 0; i < mapsize; i++)
                 {
                     for (int y = 0; y < mapsize; y++)
@@ -314,7 +317,7 @@ namespace SimpleTextRPG
                         else
                         
 
-                        Console.Write("?");
+                        Console.Write("?"); //pozostałe lokacje, wyświetlone jako '?'
 
                         Console.ForegroundColor = ConsoleColor.White;
 

@@ -19,8 +19,9 @@ namespace SimpleTextRPG
 /*
  Plans to do next:
 - Fixing some bugs
-- Implementing Items
-- Implementing Shops
-- Implementing Inns
+- Revamping Map Generation
+- Categorizing monster spawn depending on location type
+- Implementing Main Menu with Instructions
+- Actually equipped gear printed along Player Stats
 - Implementing Story
  */
