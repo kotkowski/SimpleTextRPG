@@ -6,6 +6,11 @@ namespace SimpleTextRPG
 {
     public static class Player //obiekt gracz
     {
+        static public bool startinggear = false; //trigger do interakcji startowej
+        static public int gemhunger = 0; //counter do alternatywnego zakończenia
+        static public string checkedItem = ""; //string do kopiowania opisów przedmiotu
+        static public bool Gunner = false; //trigger, czy gracz walczy z Gunnerem 
+        static public bool PowerSuit = false; //trigger, czy gracz walczy z Power Suit
         static public bool map = false; //trigger, czy gracz posiada mapę
         static public Item weaponequipped = new Item(-1); //wyekwipowana broń, standardowo - żadna
         static public Item armorequipped = new Item(-2); //wyekwipowany pancerz, standardowo żaden
@@ -299,15 +304,15 @@ namespace SimpleTextRPG
         public static void InitializeBossFight() //Gdy gracz znajdzie się na odpowiednich koordynatach, inicjalizuje walkę z bossem
         {
             Player.encounter = 666;
-            Creature.name = "Gem Guardian (Boss)";
-            Creature.maxhealth = 750;
-            Creature.health = 750;
+            Creature.name = "Regoult The Guardian God (Boss)";
+            Creature.maxhealth = 2500;
+            Creature.health = 2500;
             Creature.hurtTreshold = 100;
-            Creature.healing = 30;
+            Creature.healing = 100;
             Creature.damage = 30;
             Creature.defence = 20;
             Creature.chargeddamage = 5 * Creature.damage;
-            Creature.xpreward = 500;
+            Creature.xpreward = 5000;
             Creature.goldreward = 9001;
         }
         public static void Randomize() //Losuje potwora, funkcja do przerobienia wkrótce, więc nie dodaję niepotrzebnych komentarzy
@@ -325,84 +330,269 @@ namespace SimpleTextRPG
 
             }
 
-            enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
-            switch (enemy)
+            switch(Map.map[Player.x, Player.y].typ)
             {
-                case 1:
-                    name = string.Concat(modifier + "Wolf");
-                    maxhealth = 15;
-                    health = 15;
-                    damage = 3;
-                    defence = 0;
-                    healing = 0;
-                    hurtTreshold = -1;
-                    chargeddamage = 5 * damage;
-                    goldreward = 1;
-                    xpreward = 20;
+                case 'F':
+                    enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
+                    switch(enemy)
+                    {
+                        case 1:
+                            name = string.Concat(modifier + "Wolf");
+                            maxhealth = 25;
+                            health = 25;
+                            damage = 3;
+                            defence = 0;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 10 * damage;
+                            goldreward = 10;
+                            xpreward = 50;
+                            break;
+                        case 2:
+                            name = string.Concat(modifier + "Forest Bandit");
+                            maxhealth = 45;
+                            health = 45;
+                            damage = 5;
+                            defence = 0;
+                            healing = 5;
+                            hurtTreshold = 3;
+                            chargeddamage = 5 * damage;
+                            goldreward = 40;
+                            xpreward = 90;
+                            break;
+                        case 3:
+                            name = string.Concat(modifier + "Green Slime");
+                            maxhealth = 10;
+                            health = 10;
+                            damage = 1;
+                            defence = 20;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 3 * damage;
+                            goldreward = 5;
+                            xpreward = 30;
+                            break;
+                        case 4:
+                            name = string.Concat(modifier + "Living Log");
+                            maxhealth = 120;
+                            health = 120;
+                            damage = 3;
+                            defence = 3;
+                            healing = 10;
+                            hurtTreshold = 40;
+                            chargeddamage = 3 * damage;
+                            goldreward = 50;
+                            xpreward = 140;
+                            break;
+                        case 5:
+                            name = string.Concat(modifier + "Bear");
+                            maxhealth = 80;
+                            health = 80;
+                            damage = 30;
+                            defence = 10;
+                            healing = 10;
+                            hurtTreshold = 30;
+                            chargeddamage = 3 * damage;
+                            goldreward = 70;
+                            xpreward = 240;
+                            break;
+                        case 6:
+                            name = string.Concat(modifier + "Spriggan");
+                            maxhealth = 50;
+                            health = 50;
+                            damage = 1;
+                            defence = 5;
+                            healing = 50;
+                            hurtTreshold = 40;
+                            chargeddamage = 5 * damage;
+                            goldreward = 70;
+                            xpreward = 50;
+                            break;
+                        default:
+                            throw new Exception("Wrong enemy ID");
+
+                    }
+                    
                     break;
-                case 2:
-                    name = string.Concat(modifier + "Bandit");
-                    maxhealth = 45;
-                    health = 45;
-                    damage = 10;
-                    defence = 5;
-                    healing = 5;
-                    hurtTreshold = 10;
-                    chargeddamage = 5 * damage;
-                    goldreward = 20;
-                    xpreward = 60;
+                case 'C':
+                    enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
+                    switch (enemy)
+                    {
+                        case 1:
+                            name = string.Concat(modifier + "Bandit Swordsman");
+                            maxhealth = 80;
+                            health = 80;
+                            damage = 10;
+                            defence = 10;
+                            healing = 15;
+                            hurtTreshold = 20;
+                            chargeddamage = 5 * damage;
+                            goldreward = 140;
+                            xpreward = 110;
+                            break;
+                            
+                        case 2:
+                            name = string.Concat(modifier + "Bandit Archer");
+                            maxhealth = 45;
+                            health = 45;
+                            damage = 35;
+                            defence = 0;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 5 * damage;
+                            goldreward = 120;
+                            xpreward = 100;
+                            break;
+                        case 3:
+                            name = string.Concat(modifier + "Bandit Brutal (Mini-boss)");
+                            maxhealth = 220;
+                            health = 220;
+                            damage = 115;
+                            defence = -10;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 2 * damage;
+                            goldreward = 320;
+                            xpreward = 280;
+                            break;
+                        case 4:
+                            name = string.Concat(modifier + "Rock Golem");
+                            maxhealth = 120;
+                            health = 120;
+                            damage = 15;
+                            defence = 30;
+                            healing = 10;
+                            hurtTreshold = -1;
+                            chargeddamage = 3 * damage;
+                            goldreward = 110;
+                            xpreward = 170;
+                            break;
+                        case 5:
+                            name = string.Concat(modifier + "Lesser Imp");
+                            maxhealth = 35;
+                            health = 35;
+                            damage = 25;
+                            defence = 40;
+                            healing = 1;
+                            hurtTreshold = -1;
+                            chargeddamage = 3 * damage;
+                            goldreward = 75;
+                            xpreward = 120;
+                            break;
+                        case 6:
+                            name = string.Concat(modifier + "Mimic");
+                            maxhealth = 250;
+                            health = 250;
+                            damage = 25;
+                            defence = 15;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 5 * damage;
+                            goldreward = 230;
+                            xpreward = 130;
+                            break;
+                        case 7:
+                            name = string.Concat(modifier + "Gray Slime");
+                            maxhealth = 50;
+                            health = 50;
+                            damage = 5;
+                            defence = 100;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 3 * damage;
+                            goldreward = 60;
+                            xpreward = 170;
+                            break;
+                        default:
+                            throw new Exception("Wrong enemy ID");
+
+                    }
                     break;
-                case 3:
-                    name = string.Concat(modifier + "Slime");
-                    maxhealth = 5;
-                    health = 5;
-                    damage = 1;
-                    defence = 20;
-                    healing = 0;
-                    hurtTreshold = -1;
-                    chargeddamage = 5 * damage;
-                    goldreward = 0;
-                    xpreward = 10;
+                case 'M':
+                    enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
+                    switch (enemy)
+                    {
+                        case 1:
+                            name = string.Concat(modifier + "Higher Imp");
+                            maxhealth = 260;
+                            health = 260;
+                            damage = 45;
+                            defence = 30;
+                            healing = 25;
+                            hurtTreshold = 100;
+                            chargeddamage = 5 * damage;
+                            goldreward = 240;
+                            xpreward = 310;
+                            break;
+
+                        case 2:
+                            name = string.Concat(modifier + "False Prophet");
+                            maxhealth = 42;
+                            health = 42;
+                            damage = 5;
+                            defence = 400;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 5 * damage;
+                            goldreward = 130;
+                            xpreward = 400;
+                            break;
+                        case 3:
+                            name = string.Concat(modifier + "Gunner From Another World");
+                            maxhealth = 100;
+                            health = 100;
+                            damage = 315;
+                            defence = 0;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 2 * damage;
+                            goldreward = 10;
+                            xpreward = 520;
+                            Player.Gunner = true;
+                            break;
+                        case 4:
+                            name = string.Concat(modifier + "Power Suit Soldier (Mini-boss)");
+                            maxhealth = 1200;
+                            health = 1200;
+                            damage = 230;
+                            defence = 30;
+                            healing = 50;
+                            hurtTreshold = 300;
+                            chargeddamage = 3 * damage;
+                            goldreward = 1100;
+                            xpreward = 1700;
+                            Player.PowerSuit = true;
+                            break;
+                        case 5:
+                            name = string.Concat(modifier + "Devil");
+                            maxhealth = 350;
+                            health = 350;
+                            damage = 130;
+                            defence = 80;
+                            healing = 0;
+                            hurtTreshold = -1;
+                            chargeddamage = 3 * damage;
+                            goldreward = 750;
+                            xpreward = 500;
+                            break;
+                        case 6:
+                            name = string.Concat(modifier + "Unseen");
+                            maxhealth = 5;
+                            health = 5;
+                            damage = 200;
+                            defence = 999999;
+                            healing = 1;
+                            hurtTreshold = 3;
+                            chargeddamage = 3 * damage;
+                            goldreward = 9999;
+                            xpreward = 9999;
+                            break;
+                        default:
+                            throw new Exception("Wrong enemy ID");
+                    }
                     break;
-                case 4:
-                    name = string.Concat(modifier + "Devil");
-                    maxhealth = 70;
-                    health = 70;
-                    damage = 10;
-                    defence = 10;
-                    healing = 0;
-                    hurtTreshold = -1;
-                    chargeddamage = 5 * damage;
-                    goldreward = 600;
-                    xpreward = 200;
-                    break;
-                case 5:
-                    name = string.Concat(modifier + "Tutor");
-                    maxhealth = 20;
-                    health = 20;
-                    damage = 1;
-                    healing = 20;
-                    hurtTreshold = 5;
-                    defence = 60;
-                    chargeddamage = 5 * damage;
-                    goldreward = 1200;
-                    xpreward = 200;
-                    break;
-                case 6:
-                    name = string.Concat(modifier + "Demon");
-                    maxhealth = 35;
-                    health = 35;
-                    damage = 20;
-                    healing = 5;
-                    hurtTreshold = 10;
-                    defence = 5;
-                    chargeddamage = 5 * damage;
-                    goldreward = 300;
-                    xpreward = 120;
-                    break;
-                default:
-                    throw new Exception("Wrong enemy ID");
             }
+            
             switch(mod)
             {
                 case 0:

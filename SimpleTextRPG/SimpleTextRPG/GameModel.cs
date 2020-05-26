@@ -26,6 +26,7 @@ namespace SimpleTextRPG
 
         public static void GameStart() //Inicjalizuje instancje obiektów, wywołuje główne menu i instrukcje (W.I.P)
         {
+            
             Items.Add('1', new Item(1));
             Items.Add('2', new Item(2));
             Items.Add('3', new Item(3));
@@ -36,11 +37,13 @@ namespace SimpleTextRPG
             Items.Add('8', new Item(12));
             Items.Add('9', new Item(13));
             Items.Add('Q', new Item(14));
+            Items.Add('M', new Item(15));
             Items.Add('W', new Item(20));
             Items.Add('E', new Item(21));
             Items.Add('R', new Item(22));
             Items.Add('T', new Item(23));
             Items.Add('Y', new Item(24));
+            Items.Add('N', new Item(25));
             Items.Add('U', new Item(30));
             Items.Add('I', new Item(31));
             Items.Add('O', new Item(32));
@@ -56,16 +59,133 @@ namespace SimpleTextRPG
             Player.Inventory.Add(new Item(12), 0);
             Player.Inventory.Add(new Item(13), 0);
             Player.Inventory.Add(new Item(14), 0);
+            Player.Inventory.Add(new Item(15), 0);
             Player.Inventory.Add(new Item(20), 0);
             Player.Inventory.Add(new Item(21), 0);
             Player.Inventory.Add(new Item(22), 0);
             Player.Inventory.Add(new Item(23), 0);
             Player.Inventory.Add(new Item(24), 0);
+            Player.Inventory.Add(new Item(25), 0);
             Player.Inventory.Add(new Item(30), 0);
             Player.Inventory.Add(new Item(31), 0);
             Player.Inventory.Add(new Item(32), 0);
             Player.Inventory.Add(new Item(33), 0);
+            
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("============================================");
+                Console.WriteLine("SSSSS   TTTTT   RRRR    PPPP    GGGGG       ");
+                Console.WriteLine("S         T     R   R   P   P   G           ");
+                Console.WriteLine("SSSSS     T     RRRRR   PPP     G  GG       ");
+                Console.WriteLine("    S     T     R  R    P       G   G       ");
+                Console.WriteLine("SSSSS     T     R   R   P       GGGGG       ");
+                Console.WriteLine("============================================");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("");
+                Console.WriteLine("Hello There, Young Adventurer!");
+                Console.WriteLine("You were summoned here for a reason!");
+                Console.Write("Our Guardian God,");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(" Regoult");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" has gone mad and stolen our");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(" Mana Gem");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("!");
+                Console.WriteLine("");
+                Console.WriteLine("Without it, our village will be destroyed within few months!");
+                Console.Write("That's why we've summoned you. We want");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(" YOU ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" to recover the gem and bring it back to our village.");
+            Console.WriteLine("(Press Any Key to Continue");
+            Console.ReadKey();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Do you have any questions?");
+                Console.WriteLine("");
+                Console.WriteLine("1. No, let's get started already");
+                Console.WriteLine("2. What about Locations?");
+                Console.WriteLine("3. What about Gear?");
+                Console.WriteLine("4. What about Personal Growth?");
+                Console.WriteLine("5. What about True Love?");
+                Console.WriteLine("6. What about Starting Gear?");
+                Console.WriteLine("");
+                string s = "";
+                char key;
+                while (true)
+                {
+                    s = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        key = s[0];
 
+                        break;
+                    }
+
+                }
+                switch (key)
+                {
+                    case '1':
+                        Map mapa = new Map(10);
+                        GameModel.drawGui(mapa);
+                        break;
+                    case '2':
+                        Console.WriteLine("Our beautiful World shifts in all kinds of ways.");
+                        Console.WriteLine("Many generations of heroes came here prepared with maps,");
+                        Console.WriteLine("sadly outdated due to process our world posseses.");
+                        Console.WriteLine("Heroes used to call it Radum Genetation or something like that");
+                        Console.WriteLine("But it was noticed that Village always is being kept in the center of the world");
+                        Console.WriteLine("(Press any key to return)");
+                        break;
+                    case '3':
+                        Console.WriteLine("Oh yes, Craftsmen of our Village makes best kind of equipment you can think of.");
+                        Console.WriteLine("You want it for free?... Sorry, they need to feed their families too.");
+                        Console.Write("Enemies you defeat?... Sorry, for unknown reason, any gear used by people of");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("this world,");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Magically converts itself into gold upon wielder's death.");
+                        Console.WriteLine("(Press any key to return)");
+                        break;
+                    case '4':
+                        Console.WriteLine("Oh yes, anyone summoned to this world, gets the blessing of our god. ");
+                        Console.WriteLine("Yes, that one, who has gone mad...");
+                        Console.WriteLine("Defeating enemies grants you essence, some heroes used to call");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Experience Points");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Upon collecting enough of them, heroes grow stronger and healthier.");
+                        Console.WriteLine("Sadly their effect weakens upon consumption, requiring more of theese for growth");
+                        Console.WriteLine("(Press any key to return)");
+                        break;
+                    case '5':
+                        Console.WriteLine("Oh yes, the true love...");
+                        Console.WriteLine("True love? There's world to be saved");
+                        Console.WriteLine("There's no time for such a nonsense");
+                        Console.WriteLine("(Press any key to return)");
+                        break;
+                    case '6':
+                        if(!Player.startinggear)
+                        {
+                            Console.WriteLine("Well, our village is pretty poor, but here, take some gold.");
+                            Console.WriteLine("(Gained 20 gold coins)");
+                            Console.WriteLine("(Press any key to return)");
+                            Player.gold = Player.gold + 20;
+                            Player.startinggear = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("I just gave you some already...");
+                            Console.WriteLine("(Press any key to return)");
+                        }
+                        
+                        break;
+                }
+                Console.ReadKey();
+            }
         }
 
         public static char translateId(int id) 
@@ -152,13 +272,13 @@ namespace SimpleTextRPG
             {
                 //Ustanawia statystyki Przeciwnika
                 Player.encounter = 100;
-                Creature.name = "Cursed Elite RNG Cursed Mini Boss (Better Run Away)";
-                Creature.maxhealth = 2000;
-                Creature.health = 2000;
+                Creature.name = "Cursed Elite RNG Cursed (Mini-Boss) (Better Run Away)";
+                Creature.maxhealth = 20000;
+                Creature.health = 20000;
                 Creature.hurtTreshold = 100;
                 Creature.healing = 100;
-                Creature.damage = 20;
-                Creature.defence = 10;
+                Creature.damage = 200;
+                Creature.defence = 100;
                 Creature.chargeddamage = 5 * Creature.damage;
                 Creature.xpreward = 5000;
                 Creature.goldreward = 9001;
@@ -282,6 +402,46 @@ namespace SimpleTextRPG
                 {
                     case 0: //Stan 0 - Walka (ze zwykłym wrogiem) zakończona w tym momencie, gracz otrzymuje nagrodę w XP oraz złocie
                         Console.ForegroundColor = ConsoleColor.White;
+                        if(Player.PowerSuit == true)
+                        {
+                            Console.WriteLine("You've found the Power Suit from Another World!");
+                            Item.AddItem(25);
+                            if(Player.gemcontained && Player.gemhunger < 25)
+                            {
+                                Console.WriteLine("Gem starts shaking violently in the presence of defeated enemy");
+                                
+                                if (Player.gemhunger < 25)
+                                { Console.WriteLine("You hear a whisper || I want more ||");
+                                    Player.gemhunger = Player.gemhunger + 1;
+                                }
+                                    
+                                else
+                                {
+                                    Console.WriteLine("You hear a whisper || I am ready... Bring me to the village ||");
+                                }
+                            }
+                            Player.PowerSuit = false;
+                        }
+                        if(Player.Gunner == true)
+                        {
+                            if (Player.gemcontained )
+                            {
+                                Console.WriteLine("Gem starts shaking violently in the presence of defeated enemy");
+                                if (Player.gemhunger < 25)
+                                {
+                                    Console.WriteLine("You hear a whisper || I want more ||");
+                                    Player.gemhunger = Player.gemhunger + 1;
+                                }
+
+                                else
+                                {
+                                    Console.WriteLine("You hear a whisper || I am ready... Bring me to the village ||");
+                                }
+                            }
+                            Console.WriteLine("You've found the Assault Rifle from Another World!");
+                            Item.AddItem(15);
+                            Player.Gunner = false;
+                        }
                         Console.WriteLine("You've defeated " + Creature.name + "!");
                         Console.WriteLine("You've gained " + Creature.xpreward + " xp and " + Creature.goldreward + " gold!");
                         Player.encounter = -1;
@@ -314,6 +474,12 @@ namespace SimpleTextRPG
                         Player.gold = (int)Math.Round(Player.gold * 0.8);
                         Player.encounter = -1;
                         break;
+                    case -80:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine(Player.checkedItem);
+                        Player.encounter = -1;
+                        
+                        break;
 
                     case -666: //Stan -666, wyświetlany w momencie śmierci bossa w lokacji klejnotu. Dodaje klejnot do ekwipunku gracza
                         Player.encounter = -1;
@@ -326,6 +492,7 @@ namespace SimpleTextRPG
                         Console.WriteLine("You've gained " + Creature.xpreward + " xp and " + Creature.goldreward + " gold!");
                         Console.ForegroundColor = ConsoleColor.White;
                         break;
+                    
                     default: break;
                 }
 
@@ -370,6 +537,7 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                         Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                        Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -406,6 +574,7 @@ namespace SimpleTextRPG
                                 Console.ForegroundColor = ConsoleColor.White;
                                 Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                                 Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                                Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("==============================");
                                 Console.ForegroundColor = ConsoleColor.White;
@@ -460,6 +629,7 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                         Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                        Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -495,6 +665,7 @@ namespace SimpleTextRPG
                                 Console.ForegroundColor = ConsoleColor.White;
                                 Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                                 Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                                Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("==============================");
                                 Console.ForegroundColor = ConsoleColor.White;
@@ -559,6 +730,7 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                         Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                        Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -617,49 +789,58 @@ namespace SimpleTextRPG
                         }
                         break;
                     case 4: //Koniec gry
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("==============================");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
-                        Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("==============================");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("Is this?... The Legendary Gem!");
-                        Console.WriteLine("You did it! You've saved the world!");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("==============================");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("=====================================");
-                        Console.WriteLine("");
-                        Console.WriteLine("==== === === = ==  === === ==== ===  ");
-                        Console.WriteLine("=    = = = = = = = = = = =  =    =   ");
-                        Console.WriteLine("==== === = === === = = = =  =   ===  ");
-                        Console.WriteLine("");
-                        Console.WriteLine("=====================================");
-                        Console.WriteLine(""); Console.WriteLine("");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write("Press ");
-                        Console.ForegroundColor = ConsoleColor.Red; 
-                        Console.Write("F");
-                        Console.ForegroundColor = ConsoleColor.White; 
-                        Console.WriteLine("to exit");
-
-                        while (true)
+                        if (Player.gemhunger == 25)
                         {
-                            s = Console.ReadLine();
-                            if (!string.IsNullOrEmpty(s))
-                            {
-                                key = s[0];
-
-                                break;
-                            }
-
+                        //TBA Alternative credits
                         }
-                        switch (char.ToUpper(key))
+                        else
                         {
-                            case 'F':  Environment.Exit(0);
-                                break;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
+                            Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                            Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Is this?... The Legendary Gem!");
+                            Console.WriteLine("You did it! You've saved the world!");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("======================================");
+                            Console.WriteLine("");
+                            Console.WriteLine("==== === === = ==  === === ==== ===  ?");
+                            Console.WriteLine("=    = = = = = = = = = = =  =    =   ?");
+                            Console.WriteLine("==== === = === === = = = =  =   ===  ?");
+                            Console.WriteLine("");
+                            Console.WriteLine("======================================");
+                            Console.WriteLine(""); Console.WriteLine("");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write("Press ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("F");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("to exit");
+
+                            while (true)
+                            {
+                                s = Console.ReadLine();
+                                if (!string.IsNullOrEmpty(s))
+                                {
+                                    key = s[0];
+
+                                    break;
+                                }
+
+                            }
+                            switch (char.ToUpper(key))
+                            {
+                                case 'F':
+                                    Environment.Exit(0);
+                                    break;
+                            }
                         }
                         break;
                     case 100:
@@ -668,6 +849,7 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
                         Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                        Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("==============================");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -681,7 +863,7 @@ namespace SimpleTextRPG
                         //Wyświetla wszystkie instancje przedmiotów oraz ich ceny, za wyjątkiem kryształu 
                         foreach (KeyValuePair<char, Item> i in Items)
                         {
-                            if (i.Key != 'L')
+                            if (i.Key != 'L' && i.Key != 'M' && i.Key != 'N')
                                 Console.WriteLine(i.Key + ">>>" + i.Value.name + " --- " + i.Value.price + " gold");
 
 

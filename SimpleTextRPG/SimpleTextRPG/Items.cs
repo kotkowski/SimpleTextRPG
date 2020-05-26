@@ -21,6 +21,7 @@ namespace SimpleTextRPG
         public int def = 0; //ilość obrony dodawana przez przedmiot
         public int dmg = 0; //ilośc obrażeń dodawana przez przedmiot
         public int hp = 0; //ilość maksymalnego zdrowia dodawana przez przedmiot
+        public string desc = "";
         public int speed = 0; //ilość statystyki prędkości dodawana przez przedmiot
         public int restoredhp = 0; //ilość zdrowia regenerowana przez przedmiot (eliksiry)
         public bool equipped = false; //czy przedmiot jest wyekwipowany
@@ -100,8 +101,15 @@ namespace SimpleTextRPG
                         }
                     }
                     break;
-                case 3: //Jeżeli to przedmiot kluczowy, nic nie robi
+                case 3: //Jeżeli to przedmiot kluczowy, wyświetli opis w powiadomieniach
                     {
+                        Player.checkedItem = this.desc;
+                        if(this.name == "Gem" && Player.gemhunger > 0)
+                        {
+                            this.desc = "You can hear the whisper saying ||Bring me back to my world... I do not belong here...|| Contained:" + Player.gemhunger + "/20";
+                            
+                        }
+                        Player.encounter = -80;
                         break;
                     }
                 default:
@@ -138,7 +146,10 @@ namespace SimpleTextRPG
                         }
                         else
                         {
-                            Player.encounter = -15;
+                            if (Player.inshop)
+                            {
+                                Player.encounter = -15;
+                            }
                         }
                     }
                     break;
@@ -156,7 +167,10 @@ namespace SimpleTextRPG
                         }
                         else
                         {
-                            Player.encounter = -15;
+                            if (Player.inshop)
+                            {
+                                Player.encounter = -15;
+                            }
                         }
                     }
                     break;
@@ -212,6 +226,7 @@ namespace SimpleTextRPG
                     this.name = "Map";
                     this.type = 3;
                     this.price = 10;
+                    this.desc = "World Map with marked location of Gem Temple";
                     break;
                 case 10:
                     this.name = "Wooden Sword";
@@ -248,6 +263,14 @@ namespace SimpleTextRPG
                     this.dmg = 55;
                     this.speed = 20;
                     this.price = 250;
+                    break;
+                case 15:
+                    this.name = "Assault Rifle";
+                    this.type = 2;
+                    this.slot = 1;
+                    this.dmg = 230;
+                    this.def = 70;
+                    this.price = 5000;
                     break;
                 case 20:
                     this.name = "Chainmail";
@@ -287,6 +310,14 @@ namespace SimpleTextRPG
                     this.hp = 30;
                     this.price = 300;
                     break;
+                case 25:
+                    this.name = "Power Suit";
+                    this.type = 2;
+                    this.slot = 2;
+                    this.def = 300;
+                    this.hp = 100;
+                    this.price = 5000;
+                    break;
                 case 30:
                     this.name = "Ring of Health";
                     this.type = 2;
@@ -320,6 +351,7 @@ namespace SimpleTextRPG
                 case 100:
                     this.name = "Gem";
                     this.type = 3;
+                    this.desc = "You can hear the whisper saying ||Bring me back to my world... I do not belong here...||";
                     break;
 
             }
