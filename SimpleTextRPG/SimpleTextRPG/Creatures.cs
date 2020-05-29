@@ -117,10 +117,10 @@ namespace SimpleTextRPG
         {
             while (Player.levelup > 0)
             {
-                Console.WriteLine("Damage +1");
-                Player.damage = Player.damage + 1;
-                Console.WriteLine("Max Health +5");
-                Player.maxhealth = Player.maxhealth + 5;
+                Console.WriteLine("Damage +5");
+                Player.damage = Player.damage + 5;
+                Console.WriteLine("Max Health +10");
+                Player.maxhealth = Player.maxhealth + 10;
                 Player.health = Player.maxhealth;
                 Player.levelup = Player.levelup - 1;
                 Player.level = Player.level++;
@@ -304,7 +304,7 @@ namespace SimpleTextRPG
         public static void InitializeBossFight() //Gdy gracz znajdzie się na odpowiednich koordynatach, inicjalizuje walkę z bossem
         {
             Player.encounter = 666;
-            Creature.name = "Regoult The Guardian God (Boss)";
+            Creature.name = "Incarnation of Regoult The Guardian God (Boss)";
             Creature.maxhealth = 2500;
             Creature.health = 2500;
             Creature.hurtTreshold = 100;
@@ -558,7 +558,7 @@ namespace SimpleTextRPG
                             defence = 30;
                             healing = 50;
                             hurtTreshold = 300;
-                            chargeddamage = 3 * damage;
+                            chargeddamage = 1 * damage;
                             goldreward = 1100;
                             xpreward = 1700;
                             Player.PowerSuit = true;

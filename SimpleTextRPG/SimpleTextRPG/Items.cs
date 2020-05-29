@@ -104,12 +104,12 @@ namespace SimpleTextRPG
                 case 3: //Jeżeli to przedmiot kluczowy, wyświetli opis w powiadomieniach
                     {
                         Player.checkedItem = this.desc;
-                        if(this.name == "Gem" && Player.gemhunger > 0)
+                        if(this.name == "Gem" && Player.gemhunger > 0) //Jeżeli gracz rozpoczął proces alternatywnego zakończenia, oprócz opisu wyświetli dodatkowy licznik
                         {
                             this.desc = "You can hear the whisper saying ||Bring me back to my world... I do not belong here...|| Contained:" + Player.gemhunger + "/20";
                             
                         }
-                        Player.encounter = -80;
+                        Player.encounter = -80; //Ustawia encounter na wyświetlanie przedmiotu
                         break;
                     }
                 default:

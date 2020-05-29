@@ -17,7 +17,5 @@ namespace SimpleTextRPG
 
 /*
  Plans to do next:
-- Fixing some bugs
-- Implementing alternative ending
-- Play testing
+- All Done
  */

@@ -70,6 +70,7 @@ namespace SimpleTextRPG
             Player.Inventory.Add(new Item(31), 0);
             Player.Inventory.Add(new Item(32), 0);
             Player.Inventory.Add(new Item(33), 0);
+            Player.Inventory.Add(new Item(100), 0);
             
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("============================================");
@@ -99,7 +100,7 @@ namespace SimpleTextRPG
                 Console.Write(" YOU ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(" to recover the gem and bring it back to our village.");
-            Console.WriteLine("(Press Any Key to Continue");
+            Console.WriteLine("(Press Any Key to Continue)");
             Console.ReadKey();
             while (true)
             {
@@ -145,7 +146,7 @@ namespace SimpleTextRPG
                         Console.WriteLine("You want it for free?... Sorry, they need to feed their families too.");
                         Console.Write("Enemies you defeat?... Sorry, for unknown reason, any gear used by people of");
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("this world,");
+                        Console.WriteLine(" this world,");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("Magically converts itself into gold upon wielder's death.");
                         Console.WriteLine("(Press any key to return)");
@@ -448,6 +449,8 @@ namespace SimpleTextRPG
                         break;
                     case -8: //Stan -8 - Walka zakończona ucieczką, gracz otrzymuje informacje o udanej ucieczce, walka się kończy
                         Player.encounter = -1;
+                        Player.PowerSuit = false;
+                        Player.Gunner = false;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("You've run away");
                         Player.run = false;
@@ -471,6 +474,8 @@ namespace SimpleTextRPG
                         Console.WriteLine("Yet somehow, you made it back to the city, losing some coins.");
                         Player.health = Player.maxhealth;
                         Player.run = false;
+                        Player.PowerSuit = false;
+                        Player.Gunner = false;
                         Player.gold = (int)Math.Round(Player.gold * 0.8);
                         Player.encounter = -1;
                         break;
@@ -791,7 +796,52 @@ namespace SimpleTextRPG
                     case 4: //Koniec gry
                         if (Player.gemhunger == 25)
                         {
-                        //TBA Alternative credits
+                            //TBA Alternative credits
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(Player.health + "/" + Player.maxhealth + "HP " + Player.damage + "DMG" + Player.defence + "DEF");
+                            Console.WriteLine("Level " + Player.level + " (" + Player.exp + "/" + Player.RequiredExp() + " Exp) --- Gold: " + Player.gold);
+                            Console.WriteLine("Weapon: " + Player.weaponequipped.name + " | Armor: " + Player.armorequipped.name + " | Ring: + " + Player.ringequipped.name);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("Is this?... The Legendary Gem!");
+                            Console.WriteLine("You did it! You've...");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("(Gem jumps out of your hand landing on the ground)");
+                            Console.WriteLine("(Gem starts absorbing ground, rising and forming into golem)");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("Name... Regoult... ");
+                            Console.WriteLine("You've let me... Return...");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("(Golem looks at you gratefully, then rises into the sky, observing)");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("What have you done?! Without Golem trapped our Village will be in even greater danger!");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("You don't deserve my protection. Trapping your god? Fools.");
+                            Console.WriteLine("You don't deserve his help either. Be free human.");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("==============================");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("================================================================");
+                            Console.WriteLine("");
+                            Console.WriteLine("=====   =====   ==  =   =====  ======   =====   =====   =====   ");
+                            Console.WriteLine("=       =   =   = = =   =      =    =   =   =     =        =    ");
+                            Console.WriteLine("=       =   =   = = =   = ===  ======   =====     =      =      ");
+                            Console.WriteLine("=       =   =   = = =   =   =  =  =     =   =     =     =       ");
+                            Console.WriteLine("=====   =====   =  ==   =====  =   =    =   =     =     =====   ");
+                            Console.WriteLine("");
+                            Console.WriteLine("=================================================================");
+                            Console.WriteLine(""); Console.WriteLine("");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("The Good Ending");
+                            Console.WriteLine("");
+                            Console.Write("Press ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("F");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("to exit");
                         }
                         else
                         {
@@ -818,11 +868,11 @@ namespace SimpleTextRPG
                             Console.WriteLine("======================================");
                             Console.WriteLine(""); Console.WriteLine("");
                             Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write("Press ");
+                            Console.Write("(Press ");
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("F");
                             Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine("to exit");
+                            Console.WriteLine("to exit)");
 
                             while (true)
                             {
