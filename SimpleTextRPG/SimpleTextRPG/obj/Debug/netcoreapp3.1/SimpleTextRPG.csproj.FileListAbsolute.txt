@@ -9,3 +9,6 @@ D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\bin\Debug\netcoreapp3.1\Simp
 D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\bin\Debug\netcoreapp3.1\SimpleTextRPG.pdb
 D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\obj\Debug\netcoreapp3.1\SimpleTextRPG.dll
 D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\obj\Debug\netcoreapp3.1\SimpleTextRPG.pdb
+D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\bin\Debug\netcoreapp3.1\SimpleTextRPGLogic.dll
+D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\bin\Debug\netcoreapp3.1\SimpleTextRPGLogic.pdb
+D:\Github\SimpleTextRPG\SimpleTextRPG\SimpleTextRPG\obj\Debug\netcoreapp3.1\SimpleTextRPG.csproj.CopyComplete

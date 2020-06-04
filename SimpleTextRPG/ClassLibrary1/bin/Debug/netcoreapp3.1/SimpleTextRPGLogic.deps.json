@@ -6,14 +6,6 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "SimpleTextRPG/1.0.0": {
-        "dependencies": {
-          "SimpleTextRPGLogic": "1.0.0"
-        },
-        "runtime": {
-          "SimpleTextRPG.dll": {}
-        }
-      },
       "SimpleTextRPGLogic/1.0.0": {
         "runtime": {
           "SimpleTextRPGLogic.dll": {}
@@ -22,11 +14,6 @@
     }
   },
   "libraries": {
-    "SimpleTextRPG/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "SimpleTextRPGLogic/1.0.0": {
       "type": "project",
       "serviceable": false,

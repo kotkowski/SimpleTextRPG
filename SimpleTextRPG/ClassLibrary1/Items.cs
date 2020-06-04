@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleTextRPG
+namespace SimpleTextRPGLogic
 {
     public class Item
     {
@@ -28,17 +28,17 @@ namespace SimpleTextRPG
 
         public void Use() //funkcja używa przedmiotu
         {
-            switch(this.type) //w zależności od typu przedmiotu wywołuje działanie
+            switch (this.type) //w zależności od typu przedmiotu wywołuje działanie
             {
                 case 0:
                     throw new Exception("Invalid Type");
-                    
+
                 case 1://Jeżeli to jest przedmiot jednorazowy
                     int amount;
                     bool ifexists = Player.Inventory.TryGetValue(this, out amount); //Pobiera ilość przedmiotów tego typu i zapisuje je w zmiennej amount
-                    if(ifexists) //Jeżeli są jakiekolwiek przedmioty tego typu
+                    if (ifexists) //Jeżeli są jakiekolwiek przedmioty tego typu
                     {
-                        if(Player.health + this.restoredhp > Player.maxhealth) //Leczy gracza "restoredhp" punktów zdrowia, lub do pełna jeżeli gracz miałby ponad punktów zdrowia ponad max
+                        if (Player.health + this.restoredhp > Player.maxhealth) //Leczy gracza "restoredhp" punktów zdrowia, lub do pełna jeżeli gracz miałby ponad punktów zdrowia ponad max
                         {
                             Player.health = Player.maxhealth;
                         }
@@ -46,7 +46,7 @@ namespace SimpleTextRPG
                         {
                             Player.health = Player.health + this.restoredhp;
                         }
-                        
+
                         Player.Inventory.Remove(this); //Usuwa przedmiot z ekwipunku i dodaje go z powrotem z -1 ilością
                         if (amount > 0)
                             Player.Inventory.Add(this, amount - 1);
@@ -104,10 +104,10 @@ namespace SimpleTextRPG
                 case 3: //Jeżeli to przedmiot kluczowy, wyświetli opis w powiadomieniach
                     {
                         Player.checkedItem = this.desc;
-                        if(this.name == "Gem" && Player.gemhunger > 0) //Jeżeli gracz rozpoczął proces alternatywnego zakończenia, oprócz opisu wyświetli dodatkowy licznik
+                        if (this.name == "Gem" && Player.gemhunger > 0) //Jeżeli gracz rozpoczął proces alternatywnego zakończenia, oprócz opisu wyświetli dodatkowy licznik
                         {
                             this.desc = "You can hear the whisper saying ||Bring me back to my world... I do not belong here...|| Contained:" + Player.gemhunger + "/20";
-                            
+
                         }
                         Player.encounter = -80; //Ustawia encounter na wyświetlanie przedmiotu
                         break;
@@ -115,7 +115,7 @@ namespace SimpleTextRPG
                 default:
                     throw new Exception("Invalid Item Type");
             }
-            
+
         }
         public static void AddItem(int id) //Dodaje przedmiot do ekwipunku gracza
         {
@@ -127,11 +127,11 @@ namespace SimpleTextRPG
                     {
                         int amount;
                         Player.Inventory.TryGetValue(i, out amount);
-                        
-                            Player.Inventory.Remove(i);
-                            if (amount >= 0)
-                                Player.Inventory.Add(i, amount + 1);
-                        }
+
+                        Player.Inventory.Remove(i);
+                        if (amount >= 0)
+                            Player.Inventory.Add(i, amount + 1);
+                    }
                     break;
                 case 2: //Jeżeli to ekwipunek i gracz jeszcze nie posiada takiego ekwipunku, gracz otrzymuje ten ekwipunek, w innym wypadku wyświetlone zostaje powiadomienie
                     //Encounter -15 - "przedmiot został pożarty", pieniądze nadal są zabierane
@@ -178,7 +178,7 @@ namespace SimpleTextRPG
         }
         public Item(int id) //Konstruktor, tworzy przedmiot korzystając z poniższej listy, wg. podanego ID
         {
-            switch(id)
+            switch (id)
             {
                 case -1:
                     slot = 1;
@@ -193,8 +193,8 @@ namespace SimpleTextRPG
                     equipped = true;
                     break;
                 case -3:
-                   slot = 1;
-                   type = 2;
+                    slot = 1;
+                    type = 2;
                     name = "None";
                     equipped = true;
                     break;

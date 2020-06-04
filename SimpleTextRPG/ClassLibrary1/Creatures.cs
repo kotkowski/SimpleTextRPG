@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleTextRPG
+namespace SimpleTextRPGLogic
 {
     public static class Player //obiekt gracz
     {
@@ -33,7 +33,7 @@ namespace SimpleTextRPG
         public static int encounter = -1; //Trigger "encounter", większy od 0 - w walce, mniejsze od 0 - różne eventy, -1 = spokój
         public static int levelup = 0; //ilość level up'ów do wywołania
         public static bool GolemAlive = true; //Trigger, czy finałowy boss żyje
-        public static Dictionary<Item, int> Inventory = new Dictionary<Item,int>(); //Ekwipunek gracza
+        public static Dictionary<Item, int> Inventory = new Dictionary<Item, int>(); //Ekwipunek gracza
         public static int consumedInventory = 0; //Ilość pożartych nadmiarowych przedmiotów
 
         public static void UseInventory() //Używanie ekwipunku
@@ -52,7 +52,7 @@ namespace SimpleTextRPG
                         Console.Write(" --- Amount:" + i.Value);
                     }
                     else
-                    if(i.Key.type == 2 && i.Key.equipped == true)
+                    if (i.Key.type == 2 && i.Key.equipped == true)
                     {
                         Console.Write(" --- Equipped ");
                     }
@@ -100,14 +100,14 @@ namespace SimpleTextRPG
 
         public static void gainExp(int expGained) //Dodaje doświadczenie i sprawdza czy gracz nie osiągnął wyższego poziomu
         {
-            
+
             Player.exp = Player.exp + expGained;
-            while (Player.exp  >= Player.RequiredExp())
+            while (Player.exp >= Player.RequiredExp())
             {
                 Player.exp = Player.exp - Player.RequiredExp();
                 Player.level++;
                 Player.levelup = Player.levelup + 1;
- 
+
 
             }
 
@@ -145,7 +145,7 @@ namespace SimpleTextRPG
         {
             if (Player.damage > Creature.defence)//Jeżeli obrażenia gracza są większe niż obrona przeciwnika, zadaj Player.damage - Creature.defence obrażeń
             {
-                Creature.health = Creature.health - (Player.damage - Creature.defence); 
+                Creature.health = Creature.health - (Player.damage - Creature.defence);
                 if (Creature.health <= 0) //Jeżeli HP przeciwnika spadnie do 0, lub mniej, nagródź gracza nagrodami (creature.goldreward, Creature.xpreward)
                 {
                     Player.gold = Player.gold + Creature.goldreward;
@@ -153,16 +153,16 @@ namespace SimpleTextRPG
                     if (Player.encounter == 666) //Jeżeli encounter == 666 (walka z finałowym bossem), zmień trigger "GolemAlive" to false i ustaw encounter na -666
                     {
                         GolemAlive = false;
-                        
+
                         Player.encounter = -666;
                     }
                     else
                     { //W innym wypadku, ustaw encounter na 0
                         Player.encounter = 0;
                     }
-                    
-                   
-                    
+
+
+
                 }
             }
             else
@@ -197,10 +197,10 @@ namespace SimpleTextRPG
         public static int healing = 5; //ile zdrowia leczy na każde użycie akcji "leczenie"
         public static int damage = 3; // ile obrażeń zadaje
         public static int defence = 0; //obrona
-        public static int chargeddamage = 5*damage; //ciężki atak (5* obrażenia)
+        public static int chargeddamage = 5 * damage; //ciężki atak (5* obrażenia)
         public static int xpreward = 5; // ile gracz otrzyma doświaddczenia po pokonaniu potwora
         public static int hurtTreshold = 1; //mając ile hp potwór uważa, że jest ranny
-        
+
         public static int goldreward = 5; // ile gracz otrzyma złota po pokonaniu potwora
         public static State stateofenemy = State.Idle; //Stan przeciwnika, standardowo "Idle" czyli "Bierny"
 
@@ -278,7 +278,7 @@ namespace SimpleTextRPG
                     if (Creature.health < Creature.hurtTreshold) //Jeżeli nadal jest mocno zraniony, potwór powtarza leczenie
                     {
                         Creature.stateofenemy = State.Healing;
-                    } 
+                    }
                     else //w innym wypadku przechodzi w stan bierny
                     { Creature.stateofenemy = State.Idle; }
 
@@ -287,6 +287,8 @@ namespace SimpleTextRPG
 
             }
         }
+
+       
 
         //enum state - stanowiący wartości stanów potwora  Idle/Preparing/Healing, wartość Attacking jest nieosiągalna, byla używana do debugowania
         public enum State
@@ -321,7 +323,7 @@ namespace SimpleTextRPG
             Random rnd = new Random();
             int mod = -1;
             int enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(0, 10)));
-            if(enemy > 5)
+            if (enemy > 5)
             {
                 enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(0, 8)));
                 modifier = ((RandomModifier)enemy).ToString();
@@ -330,11 +332,11 @@ namespace SimpleTextRPG
 
             }
 
-            switch(Map.map[Player.x, Player.y].typ)
+            switch (Map.map[Player.x, Player.y].typ)
             {
                 case 'F':
                     enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
-                    switch(enemy)
+                    switch (enemy)
                     {
                         case 1:
                             name = string.Concat(modifier + "Wolf");
@@ -412,7 +414,7 @@ namespace SimpleTextRPG
                             throw new Exception("Wrong enemy ID");
 
                     }
-                    
+
                     break;
                 case 'C':
                     enemy = Convert.ToInt32(Math.Floor((decimal)rnd.Next(1, 6)));
@@ -430,7 +432,7 @@ namespace SimpleTextRPG
                             goldreward = 140;
                             xpreward = 110;
                             break;
-                            
+
                         case 2:
                             name = string.Concat(modifier + "Bandit Archer");
                             maxhealth = 45;
@@ -592,8 +594,8 @@ namespace SimpleTextRPG
                     }
                     break;
             }
-            
-            switch(mod)
+
+            switch (mod)
             {
                 case 0:
                     damage = Convert.ToInt32(damage * 1.2);
@@ -637,7 +639,7 @@ namespace SimpleTextRPG
 
         }
 
-      
+
 
 
     }
@@ -650,7 +652,7 @@ namespace SimpleTextRPG
         Slime,
         Devil,
         Tutor,
-        Demon        
+        Demon
     }
 
     enum RandomModifier
@@ -665,5 +667,5 @@ namespace SimpleTextRPG
         Hungry
     }
 
-    
+
 }

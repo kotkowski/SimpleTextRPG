@@ -1,0 +1,8 @@
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\obj\Debug\netcoreapp3.1\SimpleTextRPGLogic.csprojAssemblyReference.cache
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\obj\Debug\netcoreapp3.1\SimpleTextRPGLogic.AssemblyInfoInputs.cache
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\obj\Debug\netcoreapp3.1\SimpleTextRPGLogic.AssemblyInfo.cs
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\bin\Debug\netcoreapp3.1\SimpleTextRPGLogic.deps.json
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\bin\Debug\netcoreapp3.1\SimpleTextRPGLogic.dll
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\bin\Debug\netcoreapp3.1\SimpleTextRPGLogic.pdb
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\obj\Debug\netcoreapp3.1\SimpleTextRPGLogic.dll
+D:\Github\SimpleTextRPG\SimpleTextRPG\ClassLibrary1\obj\Debug\netcoreapp3.1\SimpleTextRPGLogic.pdb

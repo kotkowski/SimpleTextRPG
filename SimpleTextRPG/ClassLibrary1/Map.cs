@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleTextRPG
+namespace SimpleTextRPGLogic
 {
     public class Map
     {
         public static int mapsize; //rozmiar mapy, standardowo na 10
         public static Location[,] map; //tablica lokacji - "mapa"
-        public static int GemX =0; //koordynat X kryształu, losowany
+        public static int GemX = 0; //koordynat X kryształu, losowany
         public static int GemY = 0; //koordynat Y kryształu, losowany
         Random rand = new Random(); //zmienna losowa do funkcji
         public Map(int size = 10) //Generuje mapę
@@ -83,17 +83,17 @@ namespace SimpleTextRPG
                             }
                             else
                                 if (tmp >= 90) //~10% na to, że lokacja będzie górami, generuj nazwę używając 2 członów i adekwatnych do nich opisów
-                            { 
-                                    type = 'M';
-                                    tmp = rand.Next(3);
-                                    prefix = ((MountainPrefix)tmp).ToString();
-                                    descprefix = MountainDescriptionPrefix[tmp];
-                                    tmp = rand.Next(4);
-                                    mid = ((MountainSuffix)tmp).ToString();
-                                    descmid = MountainDescriptionMid[tmp];
-                                    desc = descprefix + descmid;
-                                    name = prefix + " " + mid;
-                                 
+                            {
+                                type = 'M';
+                                tmp = rand.Next(3);
+                                prefix = ((MountainPrefix)tmp).ToString();
+                                descprefix = MountainDescriptionPrefix[tmp];
+                                tmp = rand.Next(4);
+                                mid = ((MountainSuffix)tmp).ToString();
+                                descmid = MountainDescriptionMid[tmp];
+                                desc = descprefix + descmid;
+                                name = prefix + " " + mid;
+
                             }
                         }
                         //Używając wylosowanych wyżej wartości, stwórz nową lokację na podanych koordynatach x(i) oraz y
@@ -107,23 +107,23 @@ namespace SimpleTextRPG
                 }
                 while (map[GemX, GemY].symbol == 'V');
 
-                    
+
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Console.WriteLine("Wrong");
             }
 
         }
-        
+
         public int Randomize(int size) //Losuje i zaokrągla wartość
         {
             int value = rand.Next(0, size);
-            
+
             value = Convert.ToInt32(Math.Ceiling((decimal)value));
             return value;
         }
-        
+
         //Poniżej znajdują się tablice enum oraz tablice string (chociaż w obu przypadkach string byłyby lepsze...) 
         //zawierające nazwy i opisy lokacji, spośród nich są losowane wartości do lokacji (jeszcze niżej, funkcja sprawdzająca mapę)
         enum ForestPrefix
@@ -241,7 +241,7 @@ namespace SimpleTextRPG
 
         List<string> MountainDescriptionPrefix = new List<string>(3)
         {
-            "The High Mountain ", "The Short Mountain ", "The Peak " 
+            "The High Mountain ", "The Short Mountain ", "The Peak "
         };
         enum MountainSuffix
         {
@@ -261,8 +261,8 @@ namespace SimpleTextRPG
             if (Player.map == true) //Sprawdza, czy gracz posiada przedmiot mapa (nabycie tego przedmiotu przełącza trigger)
             {
                 for (int i = 0; i < mapsize; i++)
-                    //Jeżeli posiada, zostanie wyświetlona mapa lokacji z odpowiednimi symbolami, dodatkowo - na czerwono zostanie zaznaczone
-                    // pole z graczem, zaś na niebiesko pole z krysztalem niezbędnym do ukończenia gry
+                //Jeżeli posiada, zostanie wyświetlona mapa lokacji z odpowiednimi symbolami, dodatkowo - na czerwono zostanie zaznaczone
+                // pole z graczem, zaś na niebiesko pole z krysztalem niezbędnym do ukończenia gry
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
@@ -301,10 +301,10 @@ namespace SimpleTextRPG
                 {
                     for (int y = 0; y < mapsize; y++)
                     {
-                        
-                        if ((Player.x - i == 0 || Player.x - i == 1 || Player.x - i == -1) &&( Player.y - y == 0 || Player.y - y == 1 || Player.y - y == -1))
+
+                        if ((Player.x - i == 0 || Player.x - i == 1 || Player.x - i == -1) && (Player.y - y == 0 || Player.y - y == 1 || Player.y - y == -1))
                         {
-                            
+
                             if (i == Player.x && y == Player.y)
                             { Console.ForegroundColor = ConsoleColor.Red; }
                             else
@@ -315,9 +315,9 @@ namespace SimpleTextRPG
                             Console.ForegroundColor = ConsoleColor.White;
                         }
                         else
-                        
 
-                        Console.Write("?"); //pozostałe lokacje, wyświetlone jako '?'
+
+                            Console.Write("?"); //pozostałe lokacje, wyświetlone jako '?'
 
                         Console.ForegroundColor = ConsoleColor.White;
 
@@ -340,6 +340,6 @@ namespace SimpleTextRPG
 
             }
         }
-        
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using SimpleTextRPGLogic;
 
 namespace SimpleTextRPG
 {
@@ -6,7 +7,7 @@ namespace SimpleTextRPG
     {
         static void Main(string[] args)
         {
-            GameModel.GameStart();
+            Print.GameStart();
             
 
 

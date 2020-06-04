@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SimpleTextRPGLogic;
 
-namespace SimpleTextRPG
+namespace SimpleTextRPGLogic
 {
     public static class GameModel
     {
@@ -26,7 +27,7 @@ namespace SimpleTextRPG
 
         public static void GameStart() //Inicjalizuje instancje obiektów, wywołuje główne menu i instrukcje (W.I.P)
         {
-            
+
             Items.Add('1', new Item(1));
             Items.Add('2', new Item(2));
             Items.Add('3', new Item(3));
@@ -71,126 +72,85 @@ namespace SimpleTextRPG
             Player.Inventory.Add(new Item(32), 0);
             Player.Inventory.Add(new Item(33), 0);
             Player.Inventory.Add(new Item(100), 0);
+
             
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("============================================");
-                Console.WriteLine("SSSSS   TTTTT   RRRR    PPPP    GGGGG       ");
-                Console.WriteLine("S         T     R   R   P   P   G           ");
-                Console.WriteLine("SSSSS     T     RRRRR   PPP     G  GG       ");
-                Console.WriteLine("    S     T     R  R    P       G   G       ");
-                Console.WriteLine("SSSSS     T     R   R   P       GGGGG       ");
-                Console.WriteLine("============================================");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("");
-                Console.WriteLine("Hello There, Young Adventurer!");
-                Console.WriteLine("You were summoned here for a reason!");
-                Console.Write("Our Guardian God,");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(" Regoult");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(" has gone mad and stolen our");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(" Mana Gem");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("!");
-                Console.WriteLine("");
-                Console.WriteLine("Without it, our village will be destroyed within few months!");
-                Console.Write("That's why we've summoned you. We want");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(" YOU ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" to recover the gem and bring it back to our village.");
-            Console.WriteLine("(Press Any Key to Continue)");
-            Console.ReadKey();
-            while (true)
+        }
+
+        public static void Launch()
+        {
+            Map mapa = new Map(10);
+            GameModel.drawGui(mapa);
+            
+        }
+        public static int FreeCoins()
+        {
+            if (!Player.startinggear)
             {
-                Console.Clear();
-                Console.WriteLine("Do you have any questions?");
-                Console.WriteLine("");
-                Console.WriteLine("1. No, let's get started already");
-                Console.WriteLine("2. What about Locations?");
-                Console.WriteLine("3. What about Gear?");
-                Console.WriteLine("4. What about Personal Growth?");
-                Console.WriteLine("5. What about True Love?");
-                Console.WriteLine("6. What about Starting Gear?");
-                Console.WriteLine("");
-                string s = "";
-                char key;
-                while (true)
-                {
-                    s = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(s))
-                    {
-                        key = s[0];
-
-                        break;
-                    }
-
-                }
-                switch (key)
-                {
-                    case '1':
-                        Map mapa = new Map(10);
-                        GameModel.drawGui(mapa);
-                        break;
-                    case '2':
-                        Console.WriteLine("Our beautiful World shifts in all kinds of ways.");
-                        Console.WriteLine("Many generations of heroes came here prepared with maps,");
-                        Console.WriteLine("sadly outdated due to process our world posseses.");
-                        Console.WriteLine("Heroes used to call it Radum Genetation or something like that");
-                        Console.WriteLine("But it was noticed that Village always is being kept in the center of the world");
-                        Console.WriteLine("(Press any key to return)");
-                        break;
-                    case '3':
-                        Console.WriteLine("Oh yes, Craftsmen of our Village makes best kind of equipment you can think of.");
-                        Console.WriteLine("You want it for free?... Sorry, they need to feed their families too.");
-                        Console.Write("Enemies you defeat?... Sorry, for unknown reason, any gear used by people of");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine(" this world,");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("Magically converts itself into gold upon wielder's death.");
-                        Console.WriteLine("(Press any key to return)");
-                        break;
-                    case '4':
-                        Console.WriteLine("Oh yes, anyone summoned to this world, gets the blessing of our god. ");
-                        Console.WriteLine("Yes, that one, who has gone mad...");
-                        Console.WriteLine("Defeating enemies grants you essence, some heroes used to call");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Experience Points");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("Upon collecting enough of them, heroes grow stronger and healthier.");
-                        Console.WriteLine("Sadly their effect weakens upon consumption, requiring more of theese for growth");
-                        Console.WriteLine("(Press any key to return)");
-                        break;
-                    case '5':
-                        Console.WriteLine("Oh yes, the true love...");
-                        Console.WriteLine("True love? There's world to be saved");
-                        Console.WriteLine("There's no time for such a nonsense");
-                        Console.WriteLine("(Press any key to return)");
-                        break;
-                    case '6':
-                        if(!Player.startinggear)
-                        {
-                            Console.WriteLine("Well, our village is pretty poor, but here, take some gold.");
-                            Console.WriteLine("(Gained 20 gold coins)");
-                            Console.WriteLine("(Press any key to return)");
-                            Player.gold = Player.gold + 20;
-                            Player.startinggear = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("I just gave you some already...");
-                            Console.WriteLine("(Press any key to return)");
-                        }
-                        
-                        break;
-                }
-                Console.ReadKey();
+                
+                Player.gold = Player.gold + 20;
+                Player.startinggear = true;
+                return 1;
+            }
+            else
+            {
+                
+                return 0;
             }
         }
 
-        public static char translateId(int id) 
-            //Używając ID przedmiotu z Items.cs zwraca klawisz z inicjalizacji w GameStart() - "Droga na około" żeby ominąć błędy kompatybilności funkcji
+        public static Random EventRandomizerRnd = new Random(); //Zmienna losująca używana w kilku funkcjach
+        public static string EventRandomizer()
+        //Wywołuje losowy event:
+        // 50% - nic się nie stało
+        // 1% - Wywołuje walkę z potężnym przeciwnikiem (praktycznie nie do pokonania bez odpowiedniego grindu
+        //24% - "Znalazłeś 20 złota"
+        // 25% - Wywołuje walkę z losowym przeciwnikiem
+        {
+            int tmp = EventRandomizerRnd.Next(100);
+            if (tmp < 50)
+            {
+                return "Nothing happened during your journey";
+            }
+            else
+            if (tmp == 75)
+            {
+                //Ustanawia statystyki Przeciwnika
+                Player.encounter = 100;
+                Creature.name = "Cursed Elite RNG Cursed (Mini-Boss) (Better Run Away)";
+                Creature.maxhealth = 20000;
+                Creature.health = 20000;
+                Creature.hurtTreshold = 100;
+                Creature.healing = 100;
+                Creature.damage = 200;
+                Creature.defence = 100;
+                Creature.chargeddamage = 5 * Creature.damage;
+                Creature.xpreward = 5000;
+                Creature.goldreward = 9001;
+                return "You are being hunted by powerful enemy.";
+            }
+            else
+                if (tmp >= 50 && tmp < 75)
+            {
+                
+                Player.gold = Player.gold + 20;
+                return "You've found some gold!";
+            }
+            else
+                
+            {
+                Player.encounter = 2;
+                Creature.Randomize();
+                return "You've encountered a wild " + Creature.name + "!";
+            }
+           
+
+
+
+
+
+        }
+        public static char translateId(int id)
+        //Używając ID przedmiotu z Items.cs zwraca klawisz z inicjalizacji w GameStart() - "Droga na około" żeby ominąć błędy kompatybilności funkcji
         {
             char key = 'l';
             switch (id)
@@ -255,52 +215,8 @@ namespace SimpleTextRPG
             }
             return key;
         }
-        public static Random EventRandomizerRnd = new Random(); //Zmienna losująca używana w kilku funkcjach
-        public static void EventRandomizer()
-            //Wywołuje losowy event:
-            // 50% - nic się nie stało
-            // 1% - Wywołuje walkę z potężnym przeciwnikiem (praktycznie nie do pokonania bez odpowiedniego grindu
-            //24% - "Znalazłeś 20 złota"
-            // 25% - Wywołuje walkę z losowym przeciwnikiem
-        {
-            int tmp = EventRandomizerRnd.Next(100);
-            if (tmp < 50)
-            {
-                Console.WriteLine("Nothing happened during your journey");
-            }
-            else
-            if (tmp == 75)
-            {
-                //Ustanawia statystyki Przeciwnika
-                Player.encounter = 100;
-                Creature.name = "Cursed Elite RNG Cursed (Mini-Boss) (Better Run Away)";
-                Creature.maxhealth = 20000;
-                Creature.health = 20000;
-                Creature.hurtTreshold = 100;
-                Creature.healing = 100;
-                Creature.damage = 200;
-                Creature.defence = 100;
-                Creature.chargeddamage = 5 * Creature.damage;
-                Creature.xpreward = 5000;
-                Creature.goldreward = 9001;
-            }
-            else
-                if (tmp >= 50 && tmp < 75)
-            {
-                Console.WriteLine("You've found some gold!");
-                Player.gold = Player.gold + 20;
-            }
-            else
-                if (tmp > 75)
-            {
-                Player.encounter = 2;
-                Creature.Randomize();
-                Console.WriteLine("You've encountered a wild " + Creature.name + "!");
-            }
 
 
-
-        }
         public static void drawGui(Map map) //Większość interakcji z użytkownikiem
         {
 
@@ -313,7 +229,7 @@ namespace SimpleTextRPG
             while (Player.GameInProgress)
             {
                 Console.Clear();
-                if (Player.x == Map.GemX && Player.y == Map.GemY) 
+                if (Player.x == Map.GemX && Player.y == Map.GemY)
                 {
                     if (Player.encounter != 666 && Player.GolemAlive != false)
                     {
@@ -385,11 +301,13 @@ namespace SimpleTextRPG
                     Console.WriteLine("You're safe here!");
                 }
                 else if (Player.encounter == -1) //w innym wypadku, jeżeli gracz nie znajduje się w stanie wyjątkowym (opisane niżej), zostanie wylosowany event
-                { EventRandomizer(); }
+                {
+                    Console.WriteLine(EventRandomizer());
+                         }
 
                 if (Player.levelup > 0)
-                    //Jeżeli gracz zdobył jakiś poziom, zostanie wyświetlona informacja oraz wywołana funkcja LevelUp, 
-                    //podnosząca statystyki i lecząca gracza
+                //Jeżeli gracz zdobył jakiś poziom, zostanie wyświetlona informacja oraz wywołana funkcja LevelUp, 
+                //podnosząca statystyki i lecząca gracza
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You've reached a new level!");
@@ -403,19 +321,20 @@ namespace SimpleTextRPG
                 {
                     case 0: //Stan 0 - Walka (ze zwykłym wrogiem) zakończona w tym momencie, gracz otrzymuje nagrodę w XP oraz złocie
                         Console.ForegroundColor = ConsoleColor.White;
-                        if(Player.PowerSuit == true)
+                        if (Player.PowerSuit == true)
                         {
                             Console.WriteLine("You've found the Power Suit from Another World!");
                             Item.AddItem(25);
-                            if(Player.gemcontained && Player.gemhunger < 25)
+                            if (Player.gemcontained && Player.gemhunger < 25)
                             {
                                 Console.WriteLine("Gem starts shaking violently in the presence of defeated enemy");
-                                
+
                                 if (Player.gemhunger < 25)
-                                { Console.WriteLine("You hear a whisper || I want more ||");
+                                {
+                                    Console.WriteLine("You hear a whisper || I want more ||");
                                     Player.gemhunger = Player.gemhunger + 1;
                                 }
-                                    
+
                                 else
                                 {
                                     Console.WriteLine("You hear a whisper || I am ready... Bring me to the village ||");
@@ -423,9 +342,9 @@ namespace SimpleTextRPG
                             }
                             Player.PowerSuit = false;
                         }
-                        if(Player.Gunner == true)
+                        if (Player.Gunner == true)
                         {
-                            if (Player.gemcontained )
+                            if (Player.gemcontained)
                             {
                                 Console.WriteLine("Gem starts shaking violently in the presence of defeated enemy");
                                 if (Player.gemhunger < 25)
@@ -483,7 +402,7 @@ namespace SimpleTextRPG
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine(Player.checkedItem);
                         Player.encounter = -1;
-                        
+
                         break;
 
                     case -666: //Stan -666, wyświetlany w momencie śmierci bossa w lokacji klejnotu. Dodaje klejnot do ekwipunku gracza
@@ -497,7 +416,7 @@ namespace SimpleTextRPG
                         Console.WriteLine("You've gained " + Creature.xpreward + " xp and " + Creature.goldreward + " gold!");
                         Console.ForegroundColor = ConsoleColor.White;
                         break;
-                    
+
                     default: break;
                 }
 
@@ -713,7 +632,8 @@ namespace SimpleTextRPG
                                 break;
 
 
-                            case '4': if (Player.gold > 5) //Jeżeli gracz ma wystarczająco złota, leczy go, w innym wypadku wywołuje encounter -24 (za mało złota)
+                            case '4':
+                                if (Player.gold > 5) //Jeżeli gracz ma wystarczająco złota, leczy go, w innym wypadku wywołuje encounter -24 (za mało złota)
                                 {
                                     Player.gold = Player.gold - 5;
                                     Player.health = Player.maxhealth;
@@ -784,8 +704,8 @@ namespace SimpleTextRPG
                             case '1': Player.Attack(); Creature.Attack(); break; // Powybraniu 1, gracz zaatakuje
                             case '2': Player.check = true; Creature.Attack(); break; //Po wygraniu 2, trigger "sprawdzajacy" zostanie aktywowany
                             case '3': Player.defence = Player.defence * 5; Creature.Attack(); Player.defence = Player.defence / 5; break;
-                                // Po wybraniu 3, obrona gracza wzrośnie pięciokrotnie na 1 turę 
-                                // Przeznaczenie - gdy przeciwnik szykuje ciężki atak
+                            // Po wybraniu 3, obrona gracza wzrośnie pięciokrotnie na 1 turę 
+                            // Przeznaczenie - gdy przeciwnik szykuje ciężki atak
                             case '4': //Po wybraniu 4, gracz może użyć ekwipunku,
                                 Player.UseInventory();
                                 break;
@@ -1295,7 +1215,7 @@ namespace SimpleTextRPG
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.Write("====");
             Console.WriteLine("");
-        } 
+        }
 
         public static void DrawCave()//Generuje obrazek jaskiń w lokacjach z jaskiniami
         {
@@ -1389,6 +1309,6 @@ namespace SimpleTextRPG
             Console.WriteLine("");
         }
     }
-    
-    
+
+
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleTextRPG
+namespace SimpleTextRPGLogic
 {
     public class Location
     {
@@ -15,10 +15,10 @@ namespace SimpleTextRPG
         {
             this.name = name;
             this.desc = description;
-            switch(typ)
+            switch (typ)
             {
                 case 'F': this.typ = 'F'; this.symbol = 'F'; break;
-                case 'C': this.typ = 'C';this.symbol = 'C';break;
+                case 'C': this.typ = 'C'; this.symbol = 'C'; break;
                 case 'V': this.typ = 'V'; this.symbol = 'V'; break;
                 case 'M': this.typ = 'M'; this.symbol = 'M'; break;
                 case '*': this.typ = '?'; this.symbol = '?'; break;
